@@ -35,3 +35,11 @@
 .\output\gd32f30x_it.o: ..\Firmware\Include\gd32f30x_exmc.h
 .\output\gd32f30x_it.o: ..\User\main.h
 .\output\gd32f30x_it.o: ..\User\systick.h
+.\output\gd32f30x_it.o: ..\USBD_CDC\Inc\cdc_acm_core.h
+.\output\gd32f30x_it.o: ..\USBD_Drivers\Inc\usbd_enum.h
+.\output\gd32f30x_it.o: ..\USBD_Drivers\Inc\usbd_core.h
+.\output\gd32f30x_it.o: ..\USBD_Drivers\Inc\usb_ch9_std.h
+.\output\gd32f30x_it.o: ..\USBD_CDC\Inc\usbd_conf.h
+.\output\gd32f30x_it.o: ..\USBD_CDC\Inc\gd32f303e_eval.h
+.\output\gd32f30x_it.o: ..\USBD_Drivers\Inc\usbd_lld_int.h
+.\output\gd32f30x_it.o: ..\USBD_Drivers\Inc\usbd_pwr.h

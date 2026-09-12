@@ -37,3 +37,9 @@
 .\output\main.o: ..\Config\Inc\bsp_gpio.h
 .\output\main.o: ..\Config\Inc\bsp_usart1.h
 .\output\main.o: ..\Config\Inc\bsp_can.h
+.\output\main.o: ..\USBD_CDC\Inc\cdc_acm_core.h
+.\output\main.o: ..\USBD_Drivers\Inc\usbd_enum.h
+.\output\main.o: ..\USBD_Drivers\Inc\usbd_core.h
+.\output\main.o: ..\USBD_Drivers\Inc\usb_ch9_std.h
+.\output\main.o: ..\USBD_CDC\Inc\usbd_conf.h
+.\output\main.o: ..\USBD_CDC\Inc\gd32f303e_eval.h

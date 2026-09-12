@@ -31,6 +31,13 @@
 ".\output\bsp_can.o"
 ".\output\bsp_gpio.o"
 ".\output\bsp_usart1.o"
+".\output\cdc_acm_core.o"
+".\output\usbd_core.o"
+".\output\usbd_enum.o"
+".\output\usbd_lld_core.o"
+".\output\usbd_lld_int.o"
+".\output\usbd_pwr.o"
+".\output\usbd_transc.o"
 --library_type=microlib --strict --scatter ".\output\Project.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

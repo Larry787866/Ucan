@@ -35,6 +35,10 @@ OF SUCH DAMAGE.
 #include "gd32f30x_it.h"
 #include "main.h"
 #include "systick.h"
+#include "cdc_acm_core.h"
+#include "usbd_lld_int.h"    // 添加这一行，提供 usbd_isr 的声明
+extern usb_dev cdc_acm;
+
 
 /*!
     \brief      this function handles NMI exception
@@ -138,4 +142,9 @@ void SysTick_Handler(void)
 {
     /* decrement the 1ms delay counter used by delay_1ms() */
     delay_decrement();
+}
+
+void USBD_LP_CAN0_RX0_IRQHandler(void)
+{
+    usbd_isr();
 }

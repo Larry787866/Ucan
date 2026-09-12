@@ -12,6 +12,8 @@
                 "E:\\keil\\ARM\\ARMCC\\include\\rw",
                 "e:\\Ucan\\Firmware\\Source",
                 "e:\\Ucan\\Config\\Src",
+                "e:\\Ucan\\USBD_CDC\\Src",
+                "e:\\Ucan\\USBD_Drivers\\Src",
                 "${default}"
             ],
             "defines": [
@@ -103,6 +105,8 @@
                 "E:\\keil\\ARM\\ARMCC\\include\\rw",
                 "e:\\Ucan\\Firmware\\Source",
                 "e:\\Ucan\\Config\\Src",
+                "e:\\Ucan\\USBD_CDC\\Src",
+                "e:\\Ucan\\USBD_Drivers\\Src",
                 "${default}"
             ],
             "defines": [
@@ -187,14 +191,17 @@
                 "e:\\Ucan\\User",
                 "e:\\Ucan\\Firmware\\Include",
                 "e:\\Ucan\\Cmsis",
-                "e:\\Ucan\\Config",
                 "e:\\Ucan\\Config\\Inc",
+                "e:\\Ucan\\USBD_CDC\\Inc",
+                "e:\\Ucan\\USBD_Drivers\\Inc",
                 "E:\\keil\\ARM\\ARMCC\\include",
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux",
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux_compat",
                 "E:\\keil\\ARM\\ARMCC\\include\\rw",
                 "e:\\Ucan\\Firmware\\Source",
                 "e:\\Ucan\\Config\\Src",
+                "e:\\Ucan\\USBD_CDC\\Src",
+                "e:\\Ucan\\USBD_Drivers\\Src",
                 "${default}"
             ],
             "defines": [

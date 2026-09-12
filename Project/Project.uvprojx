@@ -653,6 +653,51 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>USBD_CDC</GroupName>
+          <Files>
+            <File>
+              <FileName>cdc_acm_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_CDC\Src\cdc_acm_core.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USBD_Drivers</GroupName>
+          <Files>
+            <File>
+              <FileName>usbd_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_enum.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_enum.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_lld_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_lld_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_lld_int.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_lld_int.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_pwr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_transc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_transc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
         <Group>
@@ -1306,6 +1351,51 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>USBD_CDC</GroupName>
+          <Files>
+            <File>
+              <FileName>cdc_acm_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_CDC\Src\cdc_acm_core.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USBD_Drivers</GroupName>
+          <Files>
+            <File>
+              <FileName>usbd_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_enum.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_enum.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_lld_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_lld_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_lld_int.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_lld_int.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_pwr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_transc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_transc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
         <Group>
@@ -1633,7 +1723,7 @@
             <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
@@ -1647,7 +1737,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,GD32F30X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\User;..\Firmware\Include;..\Cmsis;..\Config;..\Config\Inc</IncludePath>
+              <IncludePath>..\User;..\Firmware\Include;..\Cmsis;..\Config\Inc;..\USBD_CDC\Inc;..\USBD_Drivers\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1956,6 +2046,51 @@
               <FileName>bsp_usart1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Config\Src\bsp_usart1.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USBD_CDC</GroupName>
+          <Files>
+            <File>
+              <FileName>cdc_acm_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_CDC\Src\cdc_acm_core.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USBD_Drivers</GroupName>
+          <Files>
+            <File>
+              <FileName>usbd_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_enum.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_enum.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_lld_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_lld_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_lld_int.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_lld_int.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_pwr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_transc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USBD_Drivers\Src\usbd_transc.c</FilePath>
             </File>
           </Files>
         </Group>
