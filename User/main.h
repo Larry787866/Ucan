@@ -35,7 +35,6 @@ OF SUCH DAMAGE.
 #ifndef MAIN_H
 #define MAIN_H
 
-/* led spark function */
-void led_spark(void);
+/* no declarations yet -- board support lives in Config/Inc/bsp_*.h */
 
 #endif /* MAIN_H */

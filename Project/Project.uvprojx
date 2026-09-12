@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,GD32F30X_CL</Define>
               <Undefine></Undefine>
-              <IncludePath>..\User;..\Utilities;..\Firmware\Include;..\Cmsis</IncludePath>
+              <IncludePath>..\User;..\Firmware\Include;..\Cmsis</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -633,12 +633,22 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Utilities</GroupName>
+          <GroupName>Config</GroupName>
           <Files>
             <File>
-              <FileName>gd32f307c_eval.c</FileName>
+              <FileName>bsp_can.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Utilities\gd32f307c_eval.c</FilePath>
+              <FilePath>..\Config\Src\bsp_can.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\bsp_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_usart1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\bsp_usart1.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -983,7 +993,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,GD32F30X_XD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\User;..\Utilities;..\Firmware\Include;..\Cmsis</IncludePath>
+              <IncludePath>..\User;..\Firmware\Include;..\Cmsis</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1276,12 +1286,22 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Utilities</GroupName>
+          <GroupName>Config</GroupName>
           <Files>
             <File>
-              <FileName>gd32f307c_eval.c</FileName>
+              <FileName>bsp_can.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Utilities\gd32f307c_eval.c</FilePath>
+              <FilePath>..\Config\Src\bsp_can.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\bsp_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_usart1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\bsp_usart1.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1627,7 +1647,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,GD32F30X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\User;..\Utilities;..\Firmware\Include;..\Cmsis</IncludePath>
+              <IncludePath>..\User;..\Firmware\Include;..\Cmsis;..\Config;..\Config\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1920,12 +1940,22 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Utilities</GroupName>
+          <GroupName>Config</GroupName>
           <Files>
             <File>
-              <FileName>gd32f307c_eval.c</FileName>
+              <FileName>bsp_can.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Utilities\gd32f307c_eval.c</FilePath>
+              <FilePath>..\Config\Src\bsp_can.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\bsp_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_usart1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\bsp_usart1.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1953,5 +1983,14 @@
     </components>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>Project</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>

@@ -34,5 +34,6 @@
 .\output\main.o: ..\Firmware\Include\gd32f30x_exmc.h
 .\output\main.o: ..\User\systick.h
 .\output\main.o: E:\keil\ARM\ARMCC\Bin\..\include\stdio.h
-.\output\main.o: ..\User\main.h
-.\output\main.o: ..\Utilities\gd32f307c_eval.h
+.\output\main.o: ..\Config\Inc\bsp_gpio.h
+.\output\main.o: ..\Config\Inc\bsp_usart1.h
+.\output\main.o: ..\Config\Inc\bsp_can.h

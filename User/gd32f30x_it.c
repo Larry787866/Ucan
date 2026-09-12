@@ -136,6 +136,6 @@ void PendSV_Handler(void)
 */
 void SysTick_Handler(void)
 {
-    led_spark();
+    /* decrement the 1ms delay counter used by delay_1ms() */
     delay_decrement();
 }

@@ -4,7 +4,6 @@
             "name": "Project_GD32F30X_CL",
             "includePath": [
                 "e:\\Ucan\\User",
-                "e:\\Ucan\\Utilities",
                 "e:\\Ucan\\Firmware\\Include",
                 "e:\\Ucan\\Cmsis",
                 "E:\\keil\\ARM\\ARMCC\\include",
@@ -12,6 +11,7 @@
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux_compat",
                 "E:\\keil\\ARM\\ARMCC\\include\\rw",
                 "e:\\Ucan\\Firmware\\Source",
+                "e:\\Ucan\\Config\\Src",
                 "${default}"
             ],
             "defines": [
@@ -95,7 +95,6 @@
             "name": "Project_GD32F30X_XD",
             "includePath": [
                 "e:\\Ucan\\User",
-                "e:\\Ucan\\Utilities",
                 "e:\\Ucan\\Firmware\\Include",
                 "e:\\Ucan\\Cmsis",
                 "E:\\keil\\ARM\\ARMCC\\include",
@@ -103,6 +102,7 @@
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux_compat",
                 "E:\\keil\\ARM\\ARMCC\\include\\rw",
                 "e:\\Ucan\\Firmware\\Source",
+                "e:\\Ucan\\Config\\Src",
                 "${default}"
             ],
             "defines": [
@@ -185,14 +185,16 @@
             "name": "Project_GD32F30X_HD",
             "includePath": [
                 "e:\\Ucan\\User",
-                "e:\\Ucan\\Utilities",
                 "e:\\Ucan\\Firmware\\Include",
                 "e:\\Ucan\\Cmsis",
+                "e:\\Ucan\\Config",
+                "e:\\Ucan\\Config\\Inc",
                 "E:\\keil\\ARM\\ARMCC\\include",
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux",
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux_compat",
                 "E:\\keil\\ARM\\ARMCC\\include\\rw",
                 "e:\\Ucan\\Firmware\\Source",
+                "e:\\Ucan\\Config\\Src",
                 "${default}"
             ],
             "defines": [

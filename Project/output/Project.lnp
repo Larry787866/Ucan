@@ -28,7 +28,9 @@
 ".\output\gd32f30x_usart.o"
 ".\output\gd32f30x_wwdgt.o"
 ".\output\startup_gd32f30x_hd.o"
-".\output\gd32f307c_eval.o"
+".\output\bsp_can.o"
+".\output\bsp_gpio.o"
+".\output\bsp_usart1.o"
 --library_type=microlib --strict --scatter ".\output\Project.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
