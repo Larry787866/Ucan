@@ -36,8 +36,9 @@ OF SUCH DAMAGE.
 #include "main.h"
 #include "systick.h"
 #include "cdc_acm_core.h"
-#include "usbd_lld_int.h"    // 添加这一行，提供 usbd_isr 的声明
-extern usb_dev cdc_acm;
+#include "usbd_lld_int.h"    // 提供 usbd_isr 的声明（该函数无参数）
+#include "bsp_can.h"         // 提供 bsp_can0_rx_isr 的声明
+#include "bsp_usbd.h"        // 提供 bsp_usbd_tx_pump 的声明
 
 
 /*!
@@ -147,4 +148,17 @@ void SysTick_Handler(void)
 void USBD_LP_CAN0_RX0_IRQHandler(void)
 {
     usbd_isr();
+
+    /* USB 传输完成中断就在刚刚这轮 usbd_isr() 里被处理掉了：
+       上一包发完 (packet_sent 置回 1) 的瞬间就接着发下一帧，
+       不必等主循环轮询，这是把发送速率拉满的关键。
+       bsp_usbd_tx_pump() 自带重入保护，主循环正在发时这里直接返回 */
+    bsp_usbd_tx_pump();
+}
+
+/* CAN0 接收 FIFO1 非空。过滤器挂在 FIFO1 上，所以走这根独立向量，
+   不和上面的 USB 中断打架 */
+void CAN0_RX1_IRQHandler(void)
+{
+    bsp_can0_rx_isr();
 }

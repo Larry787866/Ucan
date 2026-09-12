@@ -15,10 +15,11 @@ int main(void)
     /* 板级外设 + USB 协议栈初始化 */
     app_init();
 
-    /* 主循环只做调度，具体任务都在 app_task.c 里 */
+    /* 主循环只做调度，具体任务都在 app_task.c 里。
+       1ms 节拍 = app_task.c 里的 APP_TICK_MS，两边要一致 */
     while (1)
     {
         app_poll();
-        delay_1ms(10);
+        delay_1ms(1);
     }
 }

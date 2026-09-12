@@ -43,3 +43,5 @@
 .\output\gd32f30x_it_1.o: ..\USBD_CDC\Inc\gd32f303e_eval.h
 .\output\gd32f30x_it_1.o: ..\USBD_Drivers\Inc\usbd_lld_int.h
 .\output\gd32f30x_it_1.o: ..\USBD_Drivers\Inc\usbd_pwr.h
+.\output\gd32f30x_it_1.o: ..\Config\Inc\bsp_can.h
+.\output\gd32f30x_it_1.o: ..\Config\Inc\bsp_usbd.h

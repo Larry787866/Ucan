@@ -30,7 +30,7 @@
 ".\output\bsp_gpio.o"
 ".\output\bsp_usart1.o"
 ".\output\bsp_usbd.o"
-".\output\protocal.o"
+".\output\protocal_1.o"
 ".\output\cdc_acm_core.o"
 ".\output\usbd_core.o"
 ".\output\usbd_enum.o"

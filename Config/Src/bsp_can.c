@@ -2,12 +2,26 @@
 
 #include <stdio.h>
 
+/* 环回自测开关：置 1 时 CAN 控制器自己给自己 ACK，发出去的帧会原样回到接收
+   FIFO，不需要总线上接第二个节点。用来单独验证 USB<->CAN 转发链路。
+   接真实总线 / 板子接到车上之前必须改回 0，否则永远收不到别人的帧 */
+#define BSP_CAN_TEST_LOOPBACK   0U
+
+/* ---------------- 接收软件 FIFO ----------------
+   单生产者（CAN0_RX1 中断）/ 单消费者（主循环）环形队列：
+   head 只在中断里改，tail 只在主循环里改，两个都是 8 位，
+   8 位读写在 Cortex-M 上是原子的，所以不需要关中断保护 */
+static can_receive_message_struct can_rx_fifo[CAN_RX_FIFO_DEPTH];
+static volatile uint8_t  can_rx_head = 0U;
+static volatile uint8_t  can_rx_tail = 0U;
+static volatile uint32_t can_rx_drop = 0U;
+
 void bsp_can0_init(void)
 {
     can_parameter_struct can_parameter;
     can_filter_parameter_struct can_filter;
 
-    /* 1. 开启时钟：GPIOB、AFIO复用时钟、CAN0外设时钟 */
+    /* 1. 开启时钟：GPIOB、AFIO复用时钟、CAN0 外设时钟 */
     rcu_periph_clock_enable(RCU_GPIOB);
     rcu_periph_clock_enable(RCU_AF);
     rcu_periph_clock_enable(RCU_CAN0);
@@ -20,18 +34,21 @@ void bsp_can0_init(void)
     // PB8 (RX): 上拉输入 (IPU)
     gpio_init(GPIOB, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_8);
 
-    /* 3. 基础控制器参数配置（对应你参考代码中的 Init 部分） */
+    /* 3. 基础控制器参数配置 */
     can_deinit(CAN0);
     can_struct_para_init(CAN_INIT_STRUCT, &can_parameter);
 
     can_parameter.time_triggered = DISABLE;          // 关闭时间触发模式
-    can_parameter.auto_bus_off_recovery = ENABLE;    // 自动离线恢复 (对应 AutoBusOff = ENABLE)
-    can_parameter.auto_wake_up = ENABLE;             // 自动唤醒 (对应 AutoWakeUp = ENABLE)
-    can_parameter.auto_retrans = ENABLE;             // 自动重传 (对应 AutoRetransmission = ENABLE)
+    can_parameter.auto_bus_off_recovery = ENABLE;    // 自动离线恢复
+    can_parameter.auto_wake_up = ENABLE;             // 自动唤醒
+    can_parameter.auto_retrans = ENABLE;             // 自动重传
     can_parameter.rec_fifo_overwrite = DISABLE;      // 接收 FIFO 溢出不覆盖
     can_parameter.trans_fifo_order = DISABLE;        // 发送优先级由报文 ID 决定
+#if (1U == BSP_CAN_TEST_LOOPBACK)
+    can_parameter.working_mode = CAN_LOOPBACK_MODE;  // 自测：自发自收，不依赖第二个节点
+#else
     can_parameter.working_mode = CAN_NORMAL_MODE;    // 正常总线通信模式
-
+#endif
 
     can_parameter.prescaler = 6;
     can_parameter.resync_jump_width = CAN_BT_SJW_1TQ;
@@ -39,19 +56,47 @@ void bsp_can0_init(void)
     can_parameter.time_segment_2 = CAN_BT_BS2_2TQ;
     can_init(CAN0, &can_parameter);
 
-    /* 4. 最基础的“全通”过滤器配置
-       注意：CAN 硬件规定必须激活至少一个过滤器，掩码全部填 0 即代表“无过滤，全部放行” */
+    /* 4. 全通过滤器。注意挂在 FIFO1 上：
+           FIFO0 的非空中断和 USB 共用一根向量（USBD_LP_CAN0_RX0_IRQHandler），
+           挂在 FIFO1 就能用 CAN0_RX1 这根独立向量，和 USB 互不干扰 */
     can_struct_para_init(CAN_FILTER_STRUCT, &can_filter);
     can_filter.filter_number = 0;                    // 使用第 0 组过滤器
     can_filter.filter_mode = CAN_FILTERMODE_MASK;    // 掩码屏蔽模式
     can_filter.filter_bits = CAN_FILTERBITS_32BIT;   // 32 位全宽
     can_filter.filter_list_high = 0x0000;            // 匹配 ID 设为 0
     can_filter.filter_list_low  = 0x0000;
-    can_filter.filter_mask_high = 0x0000;            // 掩码设为 0（不关心任何位，全部放行）
+    can_filter.filter_mask_high = 0x0000;            // 掩码设为 0（全部放行）
     can_filter.filter_mask_low  = 0x0000;
-    can_filter.filter_fifo_number = CAN_FIFO0;       // 存入 FIFO0 邮箱
+    can_filter.filter_fifo_number = CAN_FIFO1;       // 存入 FIFO1 邮箱
     can_filter.filter_enable = ENABLE;               // 激活过滤器
     can_filter_init(&can_filter);
+
+    /* 5. 接收改成中断驱动：FIFO1 一非空就进 CAN0_RX1_IRQHandler */
+    can_interrupt_enable(CAN0, CAN_INT_RFNE1);
+    nvic_irq_enable(CAN0_RX1_IRQn, 1, 0);
+}
+
+/* CAN0 RX1 中断：把硬件 FIFO 里的帧尽快搬进软件 FIFO。
+   硬件 FIFO 只有 3 级，不在这里立刻搬空就会丢帧 */
+void bsp_can0_rx_isr(void)
+{
+    can_receive_message_struct frame;
+    uint8_t next;
+
+    while (0U != can_receive_message_length_get(CAN0, CAN_FIFO1)) {
+        can_message_receive(CAN0, CAN_FIFO1, &frame);
+
+        next = (uint8_t)((can_rx_head + 1U) % CAN_RX_FIFO_DEPTH);
+        if (next == can_rx_tail) {
+            can_rx_drop++;      /* 软件 FIFO 也满了，只能丢 */
+        } else {
+            can_rx_fifo[can_rx_head] = frame;
+            __DMB();            /* 保证帧内容先于 head 对主循环可见 */
+            can_rx_head = next;
+        }
+    }
+
+    can_interrupt_flag_clear(CAN0, CAN_INT_FLAG_RFL1);
 }
 
 /* 发送一帧数据，可指定标准帧或扩展帧 */
@@ -89,15 +134,24 @@ uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t len)
 {
     return can0_send_frame(id, 0U, data, len);
 }
-/* 接收一帧数据（轮询读取） */
+
+/* 从软件 FIFO 取一帧（主循环上下文） */
 uint8_t can0_recv_msg(can_receive_message_struct *rx_msg)
 {
-    // 检查 FIFO0 是否有报文挂起等待读取
-    if (can_receive_message_length_get(CAN0, CAN_FIFO0) > 0) {
-        can_message_receive(CAN0, CAN_FIFO0, rx_msg);
-        return 1; // 读到报文
+    if ((NULL == rx_msg) || (can_rx_head == can_rx_tail)) {
+        return 0U;      // FIFO 空
     }
-    return 0; // 无报文
+
+    *rx_msg = can_rx_fifo[can_rx_tail];
+    can_rx_tail = (uint8_t)((can_rx_tail + 1U) % CAN_RX_FIFO_DEPTH);
+
+    return 1U;
+}
+
+/* 丢帧计数 */
+uint32_t can0_rx_drop_count(void)
+{
+    return can_rx_drop;
 }
 
 /* 把一帧报文打印到调试串口 */

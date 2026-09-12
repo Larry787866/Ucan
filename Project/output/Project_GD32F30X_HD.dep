@@ -831,7 +831,7 @@ I (..\Firmware\Include\gd32f30x_exmc.h)(0x6AA3F434)
 F (..\Cmsis\startup_gd32f30x_cl.s)(0x6AA3F95C)()
 F (..\Cmsis\startup_gd32f30x_hd.s)(0x6AA3F434)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include--pd "__UVISION_VERSION SETA 537" --pd "_RTE_ SETA 1" --pd "GD32F30X_HD SETA 1" --pd "_RTE_ SETA 1"--list .\list\startup_gd32f30x_hd.lst --xref -o .\output\startup_gd32f30x_hd.o --depend .\output\startup_gd32f30x_hd.d)
 F (..\Cmsis\startup_gd32f30x_xd.s)(0x6AA3F95C)()
-F (..\Config\Src\app_task.c)(0x6AA53CD1)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\app_task.o --omf_browse .\output\app_task.crf --depend .\output\app_task.d)
+F (..\Config\Src\app_task.c)(0x6AA543B1)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\app_task.o --omf_browse .\output\app_task.crf --depend .\output\app_task.d)
 I (..\Config\Inc\app_task.h)(0x6AA53A1A)
 I (..\Cmsis\gd32f30x.h)(0x6AA3F434)
 I (..\Cmsis\core_cm4.h)(0x6AA3F434)
@@ -868,11 +868,11 @@ I (..\Firmware\Include\gd32f30x_exmc.h)(0x6AA3F434)
 I (..\Config\Inc\bsp_gpio.h)(0x6AA4C6D6)
 I (..\Config\Inc\bsp_usart1.h)(0x6AA53A1F)
 I (E:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
-I (..\Config\Inc\bsp_can.h)(0x6AA53CB9)
-I (..\Config\Inc\bsp_usbd.h)(0x6AA53CC4)
+I (..\Config\Inc\bsp_can.h)(0x6AA5438E)
+I (..\Config\Inc\bsp_usbd.h)(0x6AA545B2)
 I (..\Connect\Inc\Protocal.h)(0x6AA53CA5)
-F (..\Config\Src\bsp_can.c)(0x6AA53CBA)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\bsp_can.o --omf_browse .\output\bsp_can.crf --depend .\output\bsp_can.d)
-I (..\Config\Inc\bsp_can.h)(0x6AA53CB9)
+F (..\Config\Src\bsp_can.c)(0x6AA545F3)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\bsp_can.o --omf_browse .\output\bsp_can.crf --depend .\output\bsp_can.d)
+I (..\Config\Inc\bsp_can.h)(0x6AA5438E)
 I (..\Cmsis\gd32f30x.h)(0x6AA3F434)
 I (..\Cmsis\core_cm4.h)(0x6AA3F434)
 I (E:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
@@ -977,8 +977,8 @@ I (..\Firmware\Include\gd32f30x_exmc.h)(0x6AA3F434)
 I (E:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
 I (..\Config\Inc\bsp_gpio.h)(0x6AA4C6D6)
 I (..\User\Inc\systick.h)(0x6986B35A)
-F (..\Config\Src\bsp_usbd.c)(0x6AA53CCA)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\bsp_usbd.o --omf_browse .\output\bsp_usbd.crf --depend .\output\bsp_usbd.d)
-I (..\Config\Inc\bsp_usbd.h)(0x6AA53CC4)
+F (..\Config\Src\bsp_usbd.c)(0x6AA546E9)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\bsp_usbd.o --omf_browse .\output\bsp_usbd.crf --depend .\output\bsp_usbd.d)
+I (..\Config\Inc\bsp_usbd.h)(0x6AA545B2)
 I (..\Cmsis\gd32f30x.h)(0x6AA3F434)
 I (..\Cmsis\core_cm4.h)(0x6AA3F434)
 I (E:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
@@ -1021,7 +1021,7 @@ I (..\USBD_CDC\Inc\usbd_conf.h)(0x6AA4D5ED)
 I (..\USBD_CDC\Inc\gd32f303e_eval.h)(0x69840B41)
 I (E:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
 I (E:\keil\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
-F (..\Connect\Src\Protocal.c)(0x6AA53CAE)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\protocal.o --omf_browse .\output\protocal.crf --depend .\output\protocal.d)
+F (..\Connect\Src\Protocal.c)(0x6AA53CAE)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\protocal_1.o --omf_browse .\output\protocal_1.crf --depend .\output\protocal_1.d)
 I (..\Connect\Inc\Protocal.h)(0x6AA53CA5)
 I (..\Cmsis\gd32f30x.h)(0x6AA3F434)
 I (..\Cmsis\core_cm4.h)(0x6AA3F434)
@@ -1055,8 +1055,8 @@ I (..\Firmware\Include\gd32f30x_wwdgt.h)(0x6AA3F434)
 I (..\Firmware\Include\gd32f30x_misc.h)(0x6AA3F434)
 I (..\Firmware\Include\gd32f30x_enet.h)(0x6AA3F434)
 I (..\Firmware\Include\gd32f30x_exmc.h)(0x6AA3F434)
-I (..\Config\Inc\bsp_can.h)(0x6AA53CB9)
-I (..\Config\Inc\bsp_usbd.h)(0x6AA53CC4)
+I (..\Config\Inc\bsp_can.h)(0x6AA5438E)
+I (..\Config\Inc\bsp_usbd.h)(0x6AA545B2)
 I (E:\keil\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
 F (..\USBD_CDC\Src\cdc_acm_core.c)(0x6982FFDC)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\cdc_acm_core.o --omf_browse .\output\cdc_acm_core.crf --depend .\output\cdc_acm_core.d)
 I (..\USBD_Drivers\Inc\usbd_transc.h)(0x6982FFDC)
@@ -1342,7 +1342,7 @@ I (..\Firmware\Include\gd32f30x_exmc.h)(0x6AA3F434)
 I (..\USBD_CDC\Inc\gd32f303e_eval.h)(0x69840B41)
 I (..\USBD_Drivers\Inc\usbd_transc.h)(0x6982FFDC)
 I (E:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
-F (..\User\Src\gd32f30x_it.c)(0x6AA52F21)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\gd32f30x_it_1.o --omf_browse .\output\gd32f30x_it_1.crf --depend .\output\gd32f30x_it_1.d)
+F (..\User\Src\gd32f30x_it.c)(0x6AA545EB)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\gd32f30x_it_1.o --omf_browse .\output\gd32f30x_it_1.crf --depend .\output\gd32f30x_it_1.d)
 I (..\User\Inc\gd32f30x_it.h)(0x6986B35A)
 I (..\Cmsis\gd32f30x.h)(0x6AA3F434)
 I (..\Cmsis\core_cm4.h)(0x6AA3F434)
@@ -1386,7 +1386,9 @@ I (..\USBD_CDC\Inc\usbd_conf.h)(0x6AA4D5ED)
 I (..\USBD_CDC\Inc\gd32f303e_eval.h)(0x69840B41)
 I (..\USBD_Drivers\Inc\usbd_lld_int.h)(0x6982FFDC)
 I (..\USBD_Drivers\Inc\usbd_pwr.h)(0x6982FFDC)
-F (..\User\Src\main.c)(0x6AA53A5E)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\main_1.o --omf_browse .\output\main_1.crf --depend .\output\main_1.d)
+I (..\Config\Inc\bsp_can.h)(0x6AA5438E)
+I (..\Config\Inc\bsp_usbd.h)(0x6AA545B2)
+F (..\User\Src\main.c)(0x6AA543B5)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User\Inc -I ..\Firmware\Include -I ..\Cmsis -I ..\Config\Inc -I ..\Connect\Inc -I ..\USBD_CDC\Inc -I ..\USBD_Drivers\Inc-I.\RTE\_GD32F30X_HD-IE:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\output\main_1.o --omf_browse .\output\main_1.crf --depend .\output\main_1.d)
 I (..\Cmsis\gd32f30x.h)(0x6AA3F434)
 I (..\Cmsis\core_cm4.h)(0x6AA3F434)
 I (E:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)

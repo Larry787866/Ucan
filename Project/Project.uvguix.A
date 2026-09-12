@@ -93,8 +93,8 @@
       <flags>2</flags>
       <showCmd>3</showCmd>
       <MinPosition>
-        <xPos>-1</xPos>
-        <yPos>-1</yPos>
+        <xPos>-32000</xPos>
+        <yPos>-32000</yPos>
       </MinPosition>
       <MaxPosition>
         <xPos>-1</xPos>
@@ -1892,7 +1892,7 @@
       </Doc>
       <Doc>
         <Name>..\Config\Inc\bsp_can.h</Name>
-        <ColumnNumber>39</ColumnNumber>
+        <ColumnNumber>23</ColumnNumber>
         <TopLine>1</TopLine>
         <CurrentLine>13</CurrentLine>
         <Folding>1</Folding>
@@ -1947,7 +1947,7 @@
       <Doc>
         <Name>..\USBD_Drivers\Src\usbd_lld_int.c</Name>
         <ColumnNumber>54</ColumnNumber>
-        <TopLine>145</TopLine>
+        <TopLine>124</TopLine>
         <CurrentLine>172</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
