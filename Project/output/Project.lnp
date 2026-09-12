@@ -1,7 +1,4 @@
 --cpu=Cortex-M4.fp.sp
-".\output\gd32f30x_it.o"
-".\output\main.o"
-".\output\systick.o"
 ".\output\system_gd32f30x.o"
 ".\output\gd32f30x_adc.o"
 ".\output\gd32f30x_bkp.o"
@@ -28,9 +25,12 @@
 ".\output\gd32f30x_usart.o"
 ".\output\gd32f30x_wwdgt.o"
 ".\output\startup_gd32f30x_hd.o"
+".\output\app_task.o"
 ".\output\bsp_can.o"
 ".\output\bsp_gpio.o"
 ".\output\bsp_usart1.o"
+".\output\bsp_usbd.o"
+".\output\protocal.o"
 ".\output\cdc_acm_core.o"
 ".\output\usbd_core.o"
 ".\output\usbd_enum.o"
@@ -38,6 +38,9 @@
 ".\output\usbd_lld_int.o"
 ".\output\usbd_pwr.o"
 ".\output\usbd_transc.o"
+".\output\gd32f30x_it_1.o"
+".\output\main_1.o"
+".\output\systick_1.o"
 --library_type=microlib --strict --scatter ".\output\Project.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

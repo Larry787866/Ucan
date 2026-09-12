@@ -6,7 +6,7 @@
 .\output\system_gd32f30x.o: ..\Cmsis\core_cmFunc.h
 .\output\system_gd32f30x.o: ..\Cmsis\core_cm4_simd.h
 .\output\system_gd32f30x.o: ..\Cmsis\system_gd32f30x.h
-.\output\system_gd32f30x.o: ..\User\gd32f30x_libopt.h
+.\output\system_gd32f30x.o: ..\User\Inc\gd32f30x_libopt.h
 .\output\system_gd32f30x.o: ..\Firmware\Include\gd32f30x_rcu.h
 .\output\system_gd32f30x.o: ..\Cmsis\gd32f30x.h
 .\output\system_gd32f30x.o: ..\Firmware\Include\gd32f30x_adc.h

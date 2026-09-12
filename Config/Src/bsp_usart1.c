@@ -27,13 +27,17 @@ void bsp_usart1_init(uint32_t baudrate)
     usart_enable(USART1);
 }
 
-void Usb_Start()
+void bsp_print_clock_info(void)
 {
-    printf("[USB] Resetting USB DP pull-up...\r\n");
-    usb_soft_connect(0); 
-    delay_1ms(200);
-    usb_soft_connect(1);   
+    printf("\r\n===================================================");
+    printf("\r\n   GD32F303CBT6 USB-CAN Board Online!");
+    printf("\r\n   CK_SYS  is %u Hz (Target: 120MHz)", rcu_clock_freq_get(CK_SYS));
+    printf("\r\n   CK_AHB  is %u Hz (Target: 120MHz)", rcu_clock_freq_get(CK_AHB));
+    printf("\r\n   CK_APB1 is %u Hz (Target:  60MHz)", rcu_clock_freq_get(CK_APB1));
+    printf("\r\n   CK_APB2 is %u Hz (Target: 120MHz)", rcu_clock_freq_get(CK_APB2));
+    printf("\r\n===================================================\r\n");
 }
+
 // 重定向 C 语言 printf 到 USART1
 int fputc(int ch, FILE *f)
 {

@@ -7,7 +7,7 @@
 .\output\gd32f30x_bkp.o: ..\Cmsis\core_cmFunc.h
 .\output\gd32f30x_bkp.o: ..\Cmsis\core_cm4_simd.h
 .\output\gd32f30x_bkp.o: ..\Cmsis\system_gd32f30x.h
-.\output\gd32f30x_bkp.o: ..\User\gd32f30x_libopt.h
+.\output\gd32f30x_bkp.o: ..\User\Inc\gd32f30x_libopt.h
 .\output\gd32f30x_bkp.o: ..\Firmware\Include\gd32f30x_rcu.h
 .\output\gd32f30x_bkp.o: ..\Cmsis\gd32f30x.h
 .\output\gd32f30x_bkp.o: ..\Firmware\Include\gd32f30x_adc.h

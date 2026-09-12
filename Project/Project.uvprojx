@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,GD32F30X_CL</Define>
               <Undefine></Undefine>
-              <IncludePath>..\User;..\Firmware\Include;..\Cmsis</IncludePath>
+              <IncludePath>..\User\Inc;..\Firmware\Include;..\Cmsis;..\Config\Inc;..\Connect\Inc;..\USBD_CDC\Inc;..\USBD_Drivers\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -381,26 +381,6 @@
         </TargetArmAds>
       </TargetOption>
       <Groups>
-        <Group>
-          <GroupName>Application</GroupName>
-          <Files>
-            <File>
-              <FileName>gd32f30x_it.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\gd32f30x_it.c</FilePath>
-            </File>
-            <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>systick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\systick.c</FilePath>
-            </File>
-          </Files>
-        </Group>
         <Group>
           <GroupName>CMSIS</GroupName>
           <Files>
@@ -636,6 +616,11 @@
           <GroupName>Config</GroupName>
           <Files>
             <File>
+              <FileName>app_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\app_task.c</FilePath>
+            </File>
+            <File>
               <FileName>bsp_can.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Config\Src\bsp_can.c</FilePath>
@@ -649,6 +634,21 @@
               <FileName>bsp_usart1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Config\Src\bsp_usart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_usbd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\bsp_usbd.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Connect</GroupName>
+          <Files>
+            <File>
+              <FileName>Protocal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Connect\Src\Protocal.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -694,6 +694,26 @@
               <FileName>usbd_transc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USBD_Drivers\Src\usbd_transc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>User</GroupName>
+          <Files>
+            <File>
+              <FileName>gd32f30x_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Src\gd32f30x_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Src\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>systick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Src\systick.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1038,7 +1058,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,GD32F30X_XD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\User;..\Firmware\Include;..\Cmsis</IncludePath>
+              <IncludePath>..\User\Inc;..\Firmware\Include;..\Cmsis;..\Config\Inc;..\Connect\Inc;..\USBD_CDC\Inc;..\USBD_Drivers\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1079,26 +1099,6 @@
         </TargetArmAds>
       </TargetOption>
       <Groups>
-        <Group>
-          <GroupName>Application</GroupName>
-          <Files>
-            <File>
-              <FileName>gd32f30x_it.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\gd32f30x_it.c</FilePath>
-            </File>
-            <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>systick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\systick.c</FilePath>
-            </File>
-          </Files>
-        </Group>
         <Group>
           <GroupName>CMSIS</GroupName>
           <Files>
@@ -1334,6 +1334,11 @@
           <GroupName>Config</GroupName>
           <Files>
             <File>
+              <FileName>app_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\app_task.c</FilePath>
+            </File>
+            <File>
               <FileName>bsp_can.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Config\Src\bsp_can.c</FilePath>
@@ -1347,6 +1352,21 @@
               <FileName>bsp_usart1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Config\Src\bsp_usart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_usbd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\bsp_usbd.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Connect</GroupName>
+          <Files>
+            <File>
+              <FileName>Protocal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Connect\Src\Protocal.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1392,6 +1412,26 @@
               <FileName>usbd_transc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USBD_Drivers\Src\usbd_transc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>User</GroupName>
+          <Files>
+            <File>
+              <FileName>gd32f30x_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Src\gd32f30x_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Src\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>systick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Src\systick.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1737,7 +1777,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,GD32F30X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\User;..\Firmware\Include;..\Cmsis;..\Config\Inc;..\USBD_CDC\Inc;..\USBD_Drivers\Inc</IncludePath>
+              <IncludePath>..\User\Inc;..\Firmware\Include;..\Cmsis;..\Config\Inc;..\Connect\Inc;..\USBD_CDC\Inc;..\USBD_Drivers\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1778,26 +1818,6 @@
         </TargetArmAds>
       </TargetOption>
       <Groups>
-        <Group>
-          <GroupName>Application</GroupName>
-          <Files>
-            <File>
-              <FileName>gd32f30x_it.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\gd32f30x_it.c</FilePath>
-            </File>
-            <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>systick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\systick.c</FilePath>
-            </File>
-          </Files>
-        </Group>
         <Group>
           <GroupName>CMSIS</GroupName>
           <Files>
@@ -2033,6 +2053,11 @@
           <GroupName>Config</GroupName>
           <Files>
             <File>
+              <FileName>app_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\app_task.c</FilePath>
+            </File>
+            <File>
               <FileName>bsp_can.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Config\Src\bsp_can.c</FilePath>
@@ -2046,6 +2071,21 @@
               <FileName>bsp_usart1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Config\Src\bsp_usart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_usbd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Config\Src\bsp_usbd.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Connect</GroupName>
+          <Files>
+            <File>
+              <FileName>Protocal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Connect\Src\Protocal.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2091,6 +2131,26 @@
               <FileName>usbd_transc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USBD_Drivers\Src\usbd_transc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>User</GroupName>
+          <Files>
+            <File>
+              <FileName>gd32f30x_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Src\gd32f30x_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Src\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>systick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Src\systick.c</FilePath>
             </File>
           </Files>
         </Group>

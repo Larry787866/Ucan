@@ -4,8 +4,13 @@
             "name": "Project_GD32F30X_CL",
             "includePath": [
                 "e:\\Ucan\\User",
+                "e:\\Ucan\\User\\Inc",
                 "e:\\Ucan\\Firmware\\Include",
                 "e:\\Ucan\\Cmsis",
+                "e:\\Ucan\\Config\\Inc",
+                "e:\\Ucan\\Connect\\Inc",
+                "e:\\Ucan\\USBD_CDC\\Inc",
+                "e:\\Ucan\\USBD_Drivers\\Inc",
                 "E:\\keil\\ARM\\ARMCC\\include",
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux",
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux_compat",
@@ -14,6 +19,7 @@
                 "e:\\Ucan\\Config\\Src",
                 "e:\\Ucan\\USBD_CDC\\Src",
                 "e:\\Ucan\\USBD_Drivers\\Src",
+                "e:\\Ucan\\User\\Src",
                 "${default}"
             ],
             "defines": [
@@ -97,8 +103,13 @@
             "name": "Project_GD32F30X_XD",
             "includePath": [
                 "e:\\Ucan\\User",
+                "e:\\Ucan\\User\\Inc",
                 "e:\\Ucan\\Firmware\\Include",
                 "e:\\Ucan\\Cmsis",
+                "e:\\Ucan\\Config\\Inc",
+                "e:\\Ucan\\Connect\\Inc",
+                "e:\\Ucan\\USBD_CDC\\Inc",
+                "e:\\Ucan\\USBD_Drivers\\Inc",
                 "E:\\keil\\ARM\\ARMCC\\include",
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux",
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux_compat",
@@ -107,6 +118,7 @@
                 "e:\\Ucan\\Config\\Src",
                 "e:\\Ucan\\USBD_CDC\\Src",
                 "e:\\Ucan\\USBD_Drivers\\Src",
+                "e:\\Ucan\\User\\Src",
                 "${default}"
             ],
             "defines": [
@@ -188,12 +200,13 @@
         {
             "name": "Project_GD32F30X_HD",
             "includePath": [
-                "e:\\Ucan\\User",
                 "e:\\Ucan\\Firmware\\Include",
                 "e:\\Ucan\\Cmsis",
                 "e:\\Ucan\\Config\\Inc",
+                "e:\\Ucan\\Connect\\Inc",
                 "e:\\Ucan\\USBD_CDC\\Inc",
                 "e:\\Ucan\\USBD_Drivers\\Inc",
+                "e:\\Ucan\\User\\Inc",
                 "E:\\keil\\ARM\\ARMCC\\include",
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux",
                 "E:\\keil\\ARM\\ARMCC\\include\\arm_linux_compat",
@@ -202,6 +215,7 @@
                 "e:\\Ucan\\Config\\Src",
                 "e:\\Ucan\\USBD_CDC\\Src",
                 "e:\\Ucan\\USBD_Drivers\\Src",
+                "e:\\Ucan\\User\\Src",
                 "${default}"
             ],
             "defines": [

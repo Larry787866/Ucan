@@ -10,7 +10,7 @@
 .\output\cdc_acm_core.o: ..\Cmsis\core_cmFunc.h
 .\output\cdc_acm_core.o: ..\Cmsis\core_cm4_simd.h
 .\output\cdc_acm_core.o: ..\Cmsis\system_gd32f30x.h
-.\output\cdc_acm_core.o: ..\User\gd32f30x_libopt.h
+.\output\cdc_acm_core.o: ..\User\Inc\gd32f30x_libopt.h
 .\output\cdc_acm_core.o: ..\Firmware\Include\gd32f30x_rcu.h
 .\output\cdc_acm_core.o: ..\Cmsis\gd32f30x.h
 .\output\cdc_acm_core.o: ..\Firmware\Include\gd32f30x_adc.h

@@ -7,7 +7,7 @@
 .\output\bsp_gpio.o: ..\Cmsis\core_cmFunc.h
 .\output\bsp_gpio.o: ..\Cmsis\core_cm4_simd.h
 .\output\bsp_gpio.o: ..\Cmsis\system_gd32f30x.h
-.\output\bsp_gpio.o: ..\User\gd32f30x_libopt.h
+.\output\bsp_gpio.o: ..\User\Inc\gd32f30x_libopt.h
 .\output\bsp_gpio.o: ..\Firmware\Include\gd32f30x_rcu.h
 .\output\bsp_gpio.o: ..\Cmsis\gd32f30x.h
 .\output\bsp_gpio.o: ..\Firmware\Include\gd32f30x_adc.h

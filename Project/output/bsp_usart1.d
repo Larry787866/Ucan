@@ -7,7 +7,7 @@
 .\output\bsp_usart1.o: ..\Cmsis\core_cmFunc.h
 .\output\bsp_usart1.o: ..\Cmsis\core_cm4_simd.h
 .\output\bsp_usart1.o: ..\Cmsis\system_gd32f30x.h
-.\output\bsp_usart1.o: ..\User\gd32f30x_libopt.h
+.\output\bsp_usart1.o: ..\User\Inc\gd32f30x_libopt.h
 .\output\bsp_usart1.o: ..\Firmware\Include\gd32f30x_rcu.h
 .\output\bsp_usart1.o: ..\Cmsis\gd32f30x.h
 .\output\bsp_usart1.o: ..\Firmware\Include\gd32f30x_adc.h
@@ -35,4 +35,4 @@
 .\output\bsp_usart1.o: ..\Firmware\Include\gd32f30x_exmc.h
 .\output\bsp_usart1.o: E:\keil\ARM\ARMCC\Bin\..\include\stdio.h
 .\output\bsp_usart1.o: ..\Config\Inc\bsp_gpio.h
-.\output\bsp_usart1.o: ..\User\systick.h
+.\output\bsp_usart1.o: ..\User\Inc\systick.h

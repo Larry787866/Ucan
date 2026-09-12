@@ -10,7 +10,7 @@
 .\output\usbd_enum.o: ..\Cmsis\core_cmFunc.h
 .\output\usbd_enum.o: ..\Cmsis\core_cm4_simd.h
 .\output\usbd_enum.o: ..\Cmsis\system_gd32f30x.h
-.\output\usbd_enum.o: ..\User\gd32f30x_libopt.h
+.\output\usbd_enum.o: ..\User\Inc\gd32f30x_libopt.h
 .\output\usbd_enum.o: ..\Firmware\Include\gd32f30x_rcu.h
 .\output\usbd_enum.o: ..\Cmsis\gd32f30x.h
 .\output\usbd_enum.o: ..\Firmware\Include\gd32f30x_adc.h

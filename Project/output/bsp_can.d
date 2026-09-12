@@ -7,7 +7,7 @@
 .\output\bsp_can.o: ..\Cmsis\core_cmFunc.h
 .\output\bsp_can.o: ..\Cmsis\core_cm4_simd.h
 .\output\bsp_can.o: ..\Cmsis\system_gd32f30x.h
-.\output\bsp_can.o: ..\User\gd32f30x_libopt.h
+.\output\bsp_can.o: ..\User\Inc\gd32f30x_libopt.h
 .\output\bsp_can.o: ..\Firmware\Include\gd32f30x_rcu.h
 .\output\bsp_can.o: ..\Cmsis\gd32f30x.h
 .\output\bsp_can.o: ..\Firmware\Include\gd32f30x_adc.h
@@ -33,3 +33,4 @@
 .\output\bsp_can.o: ..\Firmware\Include\gd32f30x_misc.h
 .\output\bsp_can.o: ..\Firmware\Include\gd32f30x_enet.h
 .\output\bsp_can.o: ..\Firmware\Include\gd32f30x_exmc.h
+.\output\bsp_can.o: E:\keil\ARM\ARMCC\Bin\..\include\stdio.h

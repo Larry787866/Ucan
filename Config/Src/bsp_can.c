@@ -1,5 +1,7 @@
 #include "bsp_can.h"
 
+#include <stdio.h>
+
 void bsp_can0_init(void)
 {
     can_parameter_struct can_parameter;
@@ -52,23 +54,40 @@ void bsp_can0_init(void)
     can_filter_init(&can_filter);
 }
 
-/* 发送一帧数据 */
-uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t len)
+/* 发送一帧数据，可指定标准帧或扩展帧 */
+uint8_t can0_send_frame(uint32_t id, uint8_t is_extended, uint8_t *data, uint8_t len)
 {
     can_transmit_message_struct tx_msg;
     uint8_t i;
 
-    tx_msg.tx_sfid = id;               // 标准帧 ID
-    tx_msg.tx_efid = 0x00;
-    tx_msg.tx_ff = CAN_FF_STANDARD;    // 标准帧格式
+    if (len > 8U) {
+        len = 8U;
+    }
+
+    if (0U != is_extended) {
+        tx_msg.tx_ff = (uint8_t)CAN_FF_EXTENDED;
+        tx_msg.tx_efid = id;           // 扩展帧 ID (29位)
+        tx_msg.tx_sfid = 0U;
+    } else {
+        tx_msg.tx_ff = (uint8_t)CAN_FF_STANDARD;
+        tx_msg.tx_sfid = id & 0x7FFU;  // 标准帧只有 11 位
+        tx_msg.tx_efid = 0U;
+    }
+
     tx_msg.tx_ft = CAN_FT_DATA;        // 数据帧
     tx_msg.tx_dlen = len;              // 字节长度 (0~8)
 
-    for (i = 0; i < len; i++) {
+    for (i = 0U; i < len; i++) {
         tx_msg.tx_data[i] = data[i];
     }
 
     return can_message_transmit(CAN0, &tx_msg);
+}
+
+/* 发送标准帧 */
+uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t len)
+{
+    return can0_send_frame(id, 0U, data, len);
 }
 /* 接收一帧数据（轮询读取） */
 uint8_t can0_recv_msg(can_receive_message_struct *rx_msg)
@@ -79,4 +98,16 @@ uint8_t can0_recv_msg(can_receive_message_struct *rx_msg)
         return 1; // 读到报文
     }
     return 0; // 无报文
+}
+
+/* 把一帧报文打印到调试串口 */
+void can0_print_msg(const can_receive_message_struct *rx_msg)
+{
+    uint8_t i;
+
+    printf("[CAN RX] ID:0x%03X, DLC:%d, Data: ", rx_msg->rx_sfid, rx_msg->rx_dlen);
+    for (i = 0; i < rx_msg->rx_dlen; i++) {
+        printf("%02X ", rx_msg->rx_data[i]);
+    }
+    printf("\r\n");
 }

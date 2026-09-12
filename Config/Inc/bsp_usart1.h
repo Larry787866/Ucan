@@ -6,7 +6,8 @@
 
 /* 初始化 PA2(TX) 和 PA3(RX) 串口 */
 void bsp_usart1_init(uint32_t baudrate);
-/* USB Start Function */
-void Usb_Start(void);
+
+/* 打印时钟树自检信息 */
+void bsp_print_clock_info(void);
 
 #endif /* BSP_USART1_H */
