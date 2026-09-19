@@ -1,0 +1,27 @@
+--cpu=Cortex-M4.fp.sp
+".\object\main.o"
+".\object\gd32f30x_it.o"
+".\object\gd32f30x_usbd_hw.o"
+".\object\system_gd32f30x.o"
+".\object\gd32f30x_exti.o"
+".\object\gd32f30x_fmc.o"
+".\object\gd32f30x_gpio.o"
+".\object\gd32f30x_misc.o"
+".\object\gd32f30x_pmu.o"
+".\object\gd32f30x_rcu.o"
+".\object\gd32f30x_timer.o"
+".\object\gd32f30x_usart.o"
+".\object\gd32f30x_ctc.o"
+".\object\gd32f303e_eval.o"
+".\object\startup_gd32f30x_hd.o"
+".\object\usbd_lld_core.o"
+".\object\usbd_lld_int.o"
+".\object\usbd_core.o"
+".\object\usbd_enum.o"
+".\object\usbd_pwr.o"
+".\object\usbd_transc.o"
+".\object\cdc_acm_core.o"
+--library_type=microlib --strict --scatter ".\object\cdc_acm.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\list\cdc_acm.map" -o .\object\cdc_acm.axf

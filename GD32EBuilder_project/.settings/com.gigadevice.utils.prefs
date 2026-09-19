@@ -1,0 +1,8 @@
+buildtools.path=.\\Tools\\Build Tools\\2.10-20180103-1919\\bin
+eclipse.preferences.version=1
+ldfile.flash.length=512
+ldfile.ram.length=64
+mcu.target=GD32F303ZET6
+toolchain.name=GNU Tools for ARM Embedded Processors
+toolchain.path.1287942917=.\\Tools\\GNU Tools ARM Embedded\\xpack-arm-none-eabi-gcc\\9.2.1-1.1\\bin
+toolchain.prefix=arm-none-eabi-
