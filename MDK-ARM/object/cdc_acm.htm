@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\object\cdc_acm.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\object\cdc_acm.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Sep 18 22:11:28 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Sat Sep 19 09:32:45 2026
 <BR><P>
 <H3>Maximum Stack Usage =         92 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -425,12 +425,12 @@ Global Symbols
 <P><STRONG><a name="[6f]"></a>_usb_setup_transc</STRONG> (Thumb, 186 bytes, Stack size 24 bytes, usbd_transc.o(i._usb_setup_transc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = _usb_setup_transc &rArr; usbd_ep_send
 </UL>
-<BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_stall_transc
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_ctl_status_in
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_vendor_request
+<BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_vendor_request
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_standard_request
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_class_request
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_ep_send
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_stall_transc
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_ctl_status_in
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbd_core.o(i.usbd_init)
 </UL>
@@ -564,8 +564,8 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_isr
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cdc_acm_data_send
-<LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cdc_acm_data_in
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_usb_setup_transc
+<LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cdc_acm_data_in
 </UL>
 
 <P><STRONG><a name="[8a]"></a>usbd_init</STRONG> (Thumb, 100 bytes, Stack size 16 bytes, usbd_core.o(i.usbd_init))
@@ -616,6 +616,12 @@ Local Symbols
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_120m_hxtal
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
+</UL>
+
+<P><STRONG><a name="[99]"></a>usbd_int_suspend</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, usbd_lld_int.o(i.usbd_int_suspend))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = usbd_int_suspend
+</UL>
+<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_isr
 </UL>
 
 <P><STRONG><a name="[3]"></a>usbd_address_set</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, usbd_lld_core.o(i.usbd_address_set))
@@ -702,12 +708,6 @@ Local Symbols
 <P><STRONG><a name="[4]"></a>usbd_suspend</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, usbd_lld_core.o(i.usbd_suspend))
 <BR>[Address Reference Count : 1]<UL><LI> usbd_lld_core.o(.data)
 </UL>
-<P><STRONG><a name="[99]"></a>usbd_int_suspend</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, usbd_lld_int.o(i.usbd_int_suspend))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = usbd_int_suspend
-</UL>
-<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_isr
-</UL>
-
 <P><STRONG><a name="[97]"></a>usb_transc_config</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, usbd_core.o(i.usb_transc_config))
 <BR><BR>[Called By]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_ep_recev
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_ep_send

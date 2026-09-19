@@ -340,7 +340,7 @@
               <MiscControls>--c99</MiscControls>
               <Define>USE_STDPERIPH_DRIVER GD32F30X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\inc;..\..\..\..\Firmware\CMSIS\GD\GD32F30x\Include;..\..\..\..\Firmware\GD32F30x_standard_peripheral\Include;..\..\..\..\Firmware\GD32F30x_usbd_library\usbd\Include;..\..\..\..\Firmware\GD32F30x_usbd_library\device\Include;..\..\..\..\Firmware\GD32F30x_usbd_library\class\device\cdc\Include;..\..\..\..\Utilities</IncludePath>
+              <IncludePath>..\basic\Inc;..\class\device\cdc\Include;..\device\Include;..\usbd\Include;..\User\inc;..\GD32F30x_standard_peripheral\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -387,17 +387,17 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\main.c</FilePath>
+              <FilePath>..\User\src\main.c</FilePath>
             </File>
             <File>
               <FileName>gd32f30x_it.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\gd32f30x_it.c</FilePath>
+              <FilePath>..\User\src\gd32f30x_it.c</FilePath>
             </File>
             <File>
               <FileName>gd32f30x_usbd_hw.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\gd32f30x_usbd_hw.c</FilePath>
+              <FilePath>..\User\src\gd32f30x_usbd_hw.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -407,7 +407,7 @@
             <File>
               <FileName>system_gd32f30x.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\system_gd32f30x.c</FilePath>
+              <FilePath>..\User\src\system_gd32f30x.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -415,49 +415,124 @@
           <GroupName>GD32F30x_Peripherals</GroupName>
           <Files>
             <File>
-              <FileName>gd32f30x_exti.c</FileName>
+              <FileName>gd32f30x_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_exti.c</FilePath>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_adc.c</FilePath>
             </File>
             <File>
-              <FileName>gd32f30x_fmc.c</FileName>
+              <FileName>gd32f30x_bkp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_fmc.c</FilePath>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_bkp.c</FilePath>
             </File>
             <File>
-              <FileName>gd32f30x_gpio.c</FileName>
+              <FileName>gd32f30x_can.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_gpio.c</FilePath>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_can.c</FilePath>
             </File>
             <File>
-              <FileName>gd32f30x_misc.c</FileName>
+              <FileName>gd32f30x_crc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_misc.c</FilePath>
-            </File>
-            <File>
-              <FileName>gd32f30x_pmu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_pmu.c</FilePath>
-            </File>
-            <File>
-              <FileName>gd32f30x_rcu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_rcu.c</FilePath>
-            </File>
-            <File>
-              <FileName>gd32f30x_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_timer.c</FilePath>
-            </File>
-            <File>
-              <FileName>gd32f30x_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_usart.c</FilePath>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_crc.c</FilePath>
             </File>
             <File>
               <FileName>gd32f30x_ctc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_ctc.c</FilePath>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_ctc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_dac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_dac.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_dbg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_dbg.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_enet.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_enet.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_exmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_exmc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_fmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_fmc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_fwdgt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_fwdgt.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_misc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_pmu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_pmu.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_rcu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_rcu.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_sdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_sdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_wwdgt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GD32F30x_standard_peripheral\Source\gd32f30x_wwdgt.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -467,7 +542,7 @@
             <File>
               <FileName>gd32f303e_eval.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Utilities\gd32f303e_eval.c</FilePath>
+              <FilePath>..\basic\Src\gd32f303e_eval.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -477,7 +552,7 @@
             <File>
               <FileName>startup_gd32f30x_hd.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\..\..\Firmware\CMSIS\GD\GD32F30x\Source\ARM\startup_gd32f30x_hd.s</FilePath>
+              <FilePath>..\basic\Src\startup_gd32f30x_hd.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -485,14 +560,14 @@
           <GroupName>USBD_Drivers</GroupName>
           <Files>
             <File>
-              <FileName>usbd_lld_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_usbd_library\usbd\Source\usbd_lld_core.c</FilePath>
-            </File>
-            <File>
               <FileName>usbd_lld_int.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_usbd_library\usbd\Source\usbd_lld_int.c</FilePath>
+              <FilePath>..\usbd\Source\usbd_lld_int.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_lld_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\usbd\Source\usbd_lld_core.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -502,22 +577,22 @@
             <File>
               <FileName>usbd_core.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_usbd_library\device\Source\usbd_core.c</FilePath>
+              <FilePath>..\device\Source\usbd_core.c</FilePath>
             </File>
             <File>
               <FileName>usbd_enum.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_usbd_library\device\Source\usbd_enum.c</FilePath>
+              <FilePath>..\device\Source\usbd_enum.c</FilePath>
             </File>
             <File>
               <FileName>usbd_pwr.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_usbd_library\device\Source\usbd_pwr.c</FilePath>
+              <FilePath>..\device\Source\usbd_pwr.c</FilePath>
             </File>
             <File>
               <FileName>usbd_transc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_usbd_library\device\Source\usbd_transc.c</FilePath>
+              <FilePath>..\device\Source\usbd_transc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -527,7 +602,7 @@
             <File>
               <FileName>cdc_acm_core.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Firmware\GD32F30x_usbd_library\class\device\cdc\Source\cdc_acm_core.c</FilePath>
+              <FilePath>..\class\device\cdc\Source\cdc_acm_core.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -560,5 +635,14 @@
     </components>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>cdc_acm</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>
