@@ -340,7 +340,7 @@
               <MiscControls>--c99</MiscControls>
               <Define>USE_STDPERIPH_DRIVER GD32F30X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\basic\Inc;..\class\device\cdc\Include;..\device\Include;..\usbd\Include;..\User\inc;..\GD32F30x_standard_peripheral\Include</IncludePath>
+              <IncludePath>..\basic\Inc;..\class\device\cdc\Include;..\device\Include;..\usbd\Include;..\User\inc;..\GD32F30x_standard_peripheral\Include;..\Conf\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -398,6 +398,16 @@
               <FileName>gd32f30x_usbd_hw.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\src\gd32f30x_usbd_hw.c</FilePath>
+            </File>
+            <File>
+              <FileName>systick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\src\systick.c</FilePath>
+            </File>
+            <File>
+              <FileName>Func.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\src\Func.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -613,6 +623,21 @@
               <FileName>readme.txt</FileName>
               <FileType>5</FileType>
               <FilePath>..\readme.txt</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Conf</GroupName>
+          <Files>
+            <File>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Conf\Src\gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Conf\Src\can.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -2,6 +2,8 @@
 ".\object\main.o"
 ".\object\gd32f30x_it.o"
 ".\object\gd32f30x_usbd_hw.o"
+".\object\systick.o"
+".\object\func.o"
 ".\object\system_gd32f30x.o"
 ".\object\gd32f30x_adc.o"
 ".\object\gd32f30x_bkp.o"
@@ -36,6 +38,8 @@
 ".\object\usbd_pwr.o"
 ".\object\usbd_transc.o"
 ".\object\cdc_acm_core.o"
+".\object\gpio.o"
+".\object\can.o"
 --library_type=microlib --strict --scatter ".\object\cdc_acm.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

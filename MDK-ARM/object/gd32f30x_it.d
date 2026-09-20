@@ -41,3 +41,4 @@
 .\object\gd32f30x_it.o: ..\basic\Inc\gd32f303e_eval.h
 .\object\gd32f30x_it.o: ..\device\Include\usbd_enum.h
 .\object\gd32f30x_it.o: ..\device\Include\usbd_pwr.h
+.\object\gd32f30x_it.o: ..\User\inc\systick.h

@@ -34,6 +34,7 @@ OF SUCH DAMAGE.
 
 #include "gd32f30x_it.h"
 #include "usbd_lld_int.h"
+#include "systick.h"
 
 /*!
     \brief      this function handles NMI exception
@@ -149,6 +150,12 @@ void USBD_LP_CAN0_RX0_IRQHandler(void)
 {
     usbd_isr();
 }
+
+void SysTick_Handler(void)
+{
+    delay_decrement();
+}
+
 
 #ifdef USBD_DOUBLE_BUFFER_ENABLE
 

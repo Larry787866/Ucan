@@ -40,3 +40,6 @@
 .\object\main.o: ..\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h
 .\object\main.o: ..\basic\Inc\gd32f303e_eval.h
 .\object\main.o: ..\User\inc\usbd_hw.h
+.\object\main.o: ..\User\inc\systick.h
+.\object\main.o: ..\User\inc\Func.h
+.\object\main.o: ..\Conf\Inc\can.h
