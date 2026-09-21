@@ -44,4 +44,7 @@ void delay_1ms(uint32_t count);
 /* delay decrement */
 void delay_decrement(void);
 
+/* get systick tick */
+uint32_t get_systick_tick(void);
+
 #endif /* SYS_TICK_H */

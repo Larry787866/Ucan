@@ -13,5 +13,7 @@ typedef enum
 void led_water(void);
 void led_toggle(uint32_t port, uint32_t pin);
 void led_state(LED_State state);
+void led_progress(void);
+void led_complete(void);
 
 #endif /* FUNC_H */

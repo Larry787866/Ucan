@@ -1,6 +1,6 @@
 /*!
     \file    usbd_conf.h
-    \brief   usb device driver basic configuration
+    \brief   the header file of USB device configuration
 
     \version 2026-2-6, V3.0.3, firmware for GD32F30x
 */
@@ -35,63 +35,28 @@ OF SUCH DAMAGE.
 #ifndef USBD_CONF_H
 #define USBD_CONF_H
 
-#include "gd32f30x.h"
-#include "gd32f303e_eval.h"
+#include "usb_conf.h"
 
-/* USBD endpoint double buffer function enable */
-//#define USBD_DOUBLE_BUFFER_ENABLE
+#define USBD_CFG_MAX_NUM                    1U
+#define USBD_ITF_MAX_NUM                    1U
 
-#define USBD_CFG_MAX_NUM                   1U
-#define USBD_ITF_MAX_NUM                   1U
+#define CDC_COM_INTERFACE                   0U
 
-#define CDC_COM_INTERFACE                  0U
+#define USB_STR_DESC_MAX_SIZE               255U
 
-/* define if low power mode is enabled; it allows entering the device into DEEP_SLEEP mode
-   following USB suspend event and wakes up after the USB wakeup event is received. */
-//#define USBD_LOWPWR_MODE_ENABLE
+#define CDC_DATA_IN_EP                      EP1_IN  /* EP1 for data IN */
+#define CDC_DATA_OUT_EP                     EP3_OUT /* EP3 for data OUT */
+#define CDC_CMD_EP                          EP2_IN  /* EP2 for CDC commands */
 
-/* USB feature -- Self Powered */
-/* #define USBD_SELF_POWERED */
+#define USB_STRING_COUNT                    4U
 
-/* endpoint count used by the CDC ACM device */
-#define CDC_CMD_EP                         EP_IN(2U)
-#define CDC_IN_EP                          EP_IN(1U)
-#define CDC_OUT_EP                         EP_OUT(3U)
+#define USB_CDC_CMD_PACKET_SIZE             8U    /* Control Endpoint Packet size */
 
-/* endpoint0, Rx/Tx buffers address offset */
-#define EP0_RX_ADDR                        (0x40U)
-#define EP0_TX_ADDR                        (0x80U)
+#define APP_RX_DATA_SIZE                    2048U /* Total size of IN buffer: 
+                                                    APP_RX_DATA_SIZE*8 / MAX_BAUDARATE * 1000 should be > CDC_IN_FRAME_INTERVAL*8 */
 
-#ifndef USBD_DOUBLE_BUFFER_ENABLE
-/* CDC data Tx buffer address offset */
-#define BULK_TX_ADDR                       0x140U
-
-/* CDC data Rx buffer address offset */
-#define BULK_RX_ADDR                       0x100U
-#else
-/* CDC data Tx buffer address offset */
-#define BULK_TX_ADDR                       0x01400100U
-
-/* CDC data Rx buffer address offset */
-#define BULK_RX_ADDR                       0x01C00180U
-#endif /* !USBD_DOUBLE_BUFFER_ENABLE */
-
-/* CDC command Tx buffer address offset */
-#define INT_TX_ADDR                        (0xC0U)
-
-#define CDC_ACM_CMD_PACKET_SIZE            8U
-#define CDC_ACM_DATA_PACKET_SIZE           64U
-
-/* endpoint count used by the CDC ACM device */
-#define EP_COUNT                           (4U)
-
-#define USB_STRING_COUNT                   4U
-
-/* base address offset of the allocation buffer, used for buffer descriptor table and packet memory */
-#define BTABLE_OFFSET                      (0x0000U)
-
-#define USB_PULLUP                         GPIOA
-#define USB_PULLUP_PIN                     GPIO_PIN_10
-#define RCU_PULLUP                         RCU_GPIOA
+/* CDC Endpoints parameters: you can fine tune these values depending on the needed baud rate and performance. */
+#define USB_CDC_DATA_PACKET_SIZE            64U   /* Endpoint IN & OUT Packet size */
+#define CDC_IN_FRAME_INTERVAL               5U    /* Number of frames between IN transfers */
 
 #endif /* USBD_CONF_H */

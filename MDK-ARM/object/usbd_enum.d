@@ -1,8 +1,10 @@
-.\object\usbd_enum.o: ..\device\Source\usbd_enum.c
-.\object\usbd_enum.o: ..\device\Include\usbd_enum.h
-.\object\usbd_enum.o: ..\device\Include\usbd_core.h
-.\object\usbd_enum.o: ..\device\Include\usb_ch9_std.h
-.\object\usbd_enum.o: ..\User\inc\usbd_conf.h
+.\object\usbd_enum.o: ..\device\core\Source\usbd_enum.c
+.\object\usbd_enum.o: ..\device\core\Include\usbd_enum.h
+.\object\usbd_enum.o: ..\device\core\Include\usbd_core.h
+.\object\usbd_enum.o: ..\driver\Include\drv_usb_core.h
+.\object\usbd_enum.o: ..\driver\Include\drv_usb_regs.h
+.\object\usbd_enum.o: ..\User\inc\usb_conf.h
+.\object\usbd_enum.o: E:\keil\ARM\ARMCC\Bin\..\include\stdlib.h
 .\object\usbd_enum.o: E:\keil\GigaDevice\GD32F30x_DFP\2.6.0\Device\Include\gd32f30x.h
 .\object\usbd_enum.o: E:\keil\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm4.h
 .\object\usbd_enum.o: E:\keil\ARM\ARMCC\Bin\..\include\stdint.h
@@ -37,6 +39,7 @@
 .\object\usbd_enum.o: ..\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h
 .\object\usbd_enum.o: ..\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h
 .\object\usbd_enum.o: ..\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h
-.\object\usbd_enum.o: ..\basic\Inc\gd32f303e_eval.h
-.\object\usbd_enum.o: ..\device\Include\usbd_transc.h
-.\object\usbd_enum.o: E:\keil\ARM\ARMCC\Bin\..\include\stdio.h
+.\object\usbd_enum.o: ..\ustd\common\usb_ch9_std.h
+.\object\usbd_enum.o: ..\driver\Include\drv_usb_dev.h
+.\object\usbd_enum.o: ..\User\inc\usbd_conf.h
+.\object\usbd_enum.o: E:\keil\ARM\ARMCC\Bin\..\include\wchar.h

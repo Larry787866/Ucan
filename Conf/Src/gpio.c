@@ -7,4 +7,5 @@ void led_gpio_config(void)
     rcu_periph_clock_enable(Led_GPIO_CLK);
     /* configure led GPIO port */ 
     gpio_init(Led_GPIO_PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, Led_GPIO_PIN1 | Led_GPIO_PIN2);
+    gpio_bit_reset(Led_GPIO_PORT, Led_GPIO_PIN1 | Led_GPIO_PIN2 | Led_GPIO_PIN3 | Led_GPIO_PIN4);
 }

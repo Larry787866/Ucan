@@ -11,7 +11,7 @@ void can0_config(void)
     rcu_periph_clock_enable(RCU_AF);
     rcu_periph_clock_enable(RCU_GPIOB);
 
-    gpio_pin_remap_config(GPIO_CAN_PARTIAL_REMAP, ENABLE);
+    gpio_pin_remap_config(GPIO_CAN0_PARTIAL_REMAP, ENABLE);
 
     /* configure CAN0 GPIO */
     gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_9);
@@ -58,10 +58,12 @@ uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t send_len)
     uint8_t i = 0U;
     uint8_t mailbox = CAN_NOMAILBOX;
 
-    if ((0 == data) || (0U == send_len)) {
+    if ((0 == data) || (0U == send_len))
+    {
         return CAN_TRANSMIT_FAILED;
     }
-    if (send_len > 8U) {
+    if (send_len > 8U)
+    {
         send_len = 8U;
     }
 
@@ -69,25 +71,29 @@ uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t send_len)
 
     tx_message.tx_sfid = id & 0x7FFU;
     tx_message.tx_efid = 0x00U;
-    tx_message.tx_ff   = CAN_FF_STANDARD;
-    tx_message.tx_ft   = CAN_FT_DATA;
+    tx_message.tx_ff = CAN_FF_STANDARD;
+    tx_message.tx_ft = CAN_FT_DATA;
     tx_message.tx_dlen = send_len;
 
-    for (i = 0U; i < send_len; i++) {
+    for (i = 0U; i < send_len; i++)
+    {
         tx_message.tx_data[i] = data[i];
     }
 
     mailbox = can_message_transmit(CAN0, &tx_message);
-    if (CAN_NOMAILBOX == mailbox) {
+    if (CAN_NOMAILBOX == mailbox)
+    {
         return CAN_TRANSMIT_NOMAILBOX;
     }
 
     timeout = 0xFFFFFU;
-    while ((CAN_TRANSMIT_PENDING == can_transmit_states(CAN0, mailbox)) && (0U != timeout)) {
+    while ((CAN_TRANSMIT_PENDING == can_transmit_states(CAN0, mailbox)) && (0U != timeout))
+    {
         timeout--;
     }
 
-    if (CAN_TRANSMIT_PENDING == can_transmit_states(CAN0, mailbox)) {
+    if (CAN_TRANSMIT_PENDING == can_transmit_states(CAN0, mailbox))
+    {
         can_transmission_stop(CAN0, mailbox);
         return CAN_TRANSMIT_TIMEOUT; /* transmit timeout */
     }
@@ -95,20 +101,21 @@ uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t send_len)
     return (uint8_t)can_transmit_states(CAN0, mailbox);
 }
 
-
 uint8_t can0_send_test(void)
 {
-    uint8_t cmd_data[]    = {0x01, 0x02, 0x03, 0x04};
+    uint8_t cmd_data[] = {0x01, 0x02, 0x03, 0x04};
     uint8_t sensor_data[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
     uint8_t state = CAN_TRANSMIT_FAILED;
 
     state = can0_send_msg(0x123, cmd_data, (uint8_t)sizeof(cmd_data));
-    if (CAN_TRANSMIT_OK != state) {
-        return state;                      
+    if (CAN_TRANSMIT_OK != state)
+    {
+        return state;
     }
 
     state = can0_send_msg(0x200, sensor_data, (uint8_t)sizeof(sensor_data));
-    if (CAN_TRANSMIT_OK != state) {
+    if (CAN_TRANSMIT_OK != state)
+    {
         return state;
     }
     state = can0_send_msg(0x300, sensor_data, 4U);

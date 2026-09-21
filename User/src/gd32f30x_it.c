@@ -8,32 +8,32 @@
 /*
     Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
-    Redistribution and use in source and binary forms, with or without modification, 
+    Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
 
-    1. Redistributions of source code must retain the above copyright notice, this 
+    1. Redistributions of source code must retain the above copyright notice, this
        list of conditions and the following disclaimer.
-    2. Redistributions in binary form must reproduce the above copyright notice, 
-       this list of conditions and the following disclaimer in the documentation 
+    2. Redistributions in binary form must reproduce the above copyright notice,
+       this list of conditions and the following disclaimer in the documentation
        and/or other materials provided with the distribution.
-    3. Neither the name of the copyright holder nor the names of its contributors 
-       may be used to endorse or promote products derived from this software without 
+    3. Neither the name of the copyright holder nor the names of its contributors
+       may be used to endorse or promote products derived from this software without
        specific prior written permission.
 
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 
 #include "gd32f30x_it.h"
-#include "usbd_lld_int.h"
+#include "drv_usbd_int.h"
 #include "systick.h"
 
 /*!
@@ -45,7 +45,8 @@ OF SUCH DAMAGE.
 void NMI_Handler(void)
 {
     /* if NMI exception occurs, go to infinite loop */
-    while(1) {
+    while (1)
+    {
     }
 }
 
@@ -58,7 +59,8 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
     /* if Hard Fault exception occurs, go to infinite loop */
-    while(1) {
+    while (1)
+    {
     }
 }
 
@@ -71,7 +73,8 @@ void HardFault_Handler(void)
 void MemManage_Handler(void)
 {
     /* if Memory Manage exception occurs, go to infinite loop */
-    while(1) {
+    while (1)
+    {
     }
 }
 
@@ -84,7 +87,8 @@ void MemManage_Handler(void)
 void BusFault_Handler(void)
 {
     /* if Bus Fault exception occurs, go to infinite loop */
-    while(1) {
+    while (1)
+    {
     }
 }
 
@@ -97,7 +101,8 @@ void BusFault_Handler(void)
 void UsageFault_Handler(void)
 {
     /* if Usage Fault exception occurs, go to infinite loop */
-    while(1) {
+    while (1)
+    {
     }
 }
 
@@ -110,7 +115,8 @@ void UsageFault_Handler(void)
 void SVC_Handler(void)
 {
     /* if SVC exception occurs, go to infinite loop */
-    while(1) {
+    while (1)
+    {
     }
 }
 
@@ -123,7 +129,8 @@ void SVC_Handler(void)
 void DebugMon_Handler(void)
 {
     /* if DebugMon exception occurs, go to infinite loop */
-    while(1) {
+    while (1)
+    {
     }
 }
 
@@ -136,7 +143,8 @@ void DebugMon_Handler(void)
 void PendSV_Handler(void)
 {
     /* if PendSV exception occurs, go to infinite loop */
-    while(1) {
+    while (1)
+    {
     }
 }
 
@@ -146,16 +154,16 @@ void PendSV_Handler(void)
     \param[out] none
     \retval     none
 */
+/*
 void USBD_LP_CAN0_RX0_IRQHandler(void)
 {
     usbd_isr();
 }
-
+*/
 void SysTick_Handler(void)
 {
     delay_decrement();
 }
-
 
 #ifdef USBD_DOUBLE_BUFFER_ENABLE
 
@@ -165,24 +173,30 @@ void SysTick_Handler(void)
     \param[out] none
     \retval     none
 */
+/*
 void USBD_HP_CAN0_TX_IRQHandler(void)
 {
     usbd_int_hpst();
 }
-
+*/
 #endif /* USBD_DOUBLE_BUFFER_ENABLE */
 
-#ifdef USBD_LOWPWR_MODE_ENABLE
+extern usb_core_driver cdc_acm;
 
 /*!
-    \brief      this function handles USBD wakeup interrupt request
-    \param[in]  none
-    \param[out] none
-    \retval     none
+    \brief      this function handles USBFS global interrupt
 */
-void USBD_WKUP_IRQHandler(void)
+void USBFS_IRQHandler(void)
 {
-    exti_interrupt_flag_clear(EXTI_18);
+    usbd_isr(&cdc_acm);
 }
 
-#endif /* USBD_LOWPWR_MODE_ENABLE */
+extern void usb_timer_irq(void);
+
+/*!
+    \brief      this function handles TIMER2 interrupt (USB delay tick)
+*/
+void TIMER2_IRQHandler(void)
+{
+    usb_timer_irq();
+}

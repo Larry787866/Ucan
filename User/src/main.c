@@ -33,12 +33,13 @@ OF SUCH DAMAGE.
 */
 
 #include "cdc_acm_core.h"
-#include "usbd_hw.h"
+#include "drv_usb_hw.h"
 #include "systick.h"
 #include "Func.h"
 #include "can.h"
+#include "gpio.h"
 
-usb_dev usbd_cdc;
+usb_core_driver cdc_acm;
 
 /*!
     \brief      main routine
@@ -49,27 +50,30 @@ usb_dev usbd_cdc;
 int main(void)
 {
     /* system clocks configuration */
-    rcu_config();
+    usb_rcu_config();
+
+    /* USB timer initialization */
+    usb_timer_init();
 
     /* GPIO configuration */
-    gpio_config();
+    led_gpio_config();
 
     /* USB device configuration */
-    usbd_init(&usbd_cdc, &cdc_desc, &cdc_class);
+    usbd_init(&cdc_acm, &cdc_desc, &cdc_class);
 
-    /* NVIC configuration */
-    nvic_config();
+    /* USB interrupt configuration */
+    usb_intr_config();
 
-    /* enabled USB pull-up */
-    usbd_connect(&usbd_cdc);
-
-    /* enable systick */
+     /* enable systick */
     systick_config();
 
-    /* CAN configuration */
-    //    can0_config();
+    /* enabled USB pull-up */
+    usbd_connect(&cdc_acm);
 
-    while (USBD_CONFIGURED != usbd_cdc.cur_status)
+    /* CAN configuration */
+    can0_config();
+
+    while (USBD_CONFIGURED != cdc_acm.dev.cur_status)
     {
         /* wait for standard USB enumeration is finished */
     }
@@ -79,13 +83,13 @@ int main(void)
         led_water();
         //        led_state(lED_IDLE);
         //        can0_send_test();
-        if (0U == cdc_acm_check_ready(&usbd_cdc))
+        if (0U == cdc_acm_check_ready(&cdc_acm))
         {
-            cdc_acm_data_receive(&usbd_cdc);
+            cdc_acm_data_receive(&cdc_acm);
         }
         else
         {
-            cdc_acm_data_send(&usbd_cdc);
+            cdc_acm_data_send(&cdc_acm);
         }
     }
 }
