@@ -38,6 +38,7 @@ OF SUCH DAMAGE.
 #include "Func.h"
 #include "can.h"
 #include "gpio.h"
+#include "Protocal.h"
 
 usb_core_driver cdc_acm;
 
@@ -49,6 +50,7 @@ usb_core_driver cdc_acm;
 */
 int main(void)
 {
+    uint32_t st;
     /* system clocks configuration */
     usb_rcu_config();
 
@@ -64,7 +66,7 @@ int main(void)
     /* USB interrupt configuration */
     usb_intr_config();
 
-     /* enable systick */
+    /* enable systick */
     systick_config();
 
     /* enabled USB pull-up */
@@ -73,6 +75,9 @@ int main(void)
     /* CAN configuration */
     can0_config();
 
+    /* protocol initialization */
+    protocol_init();
+
     while (USBD_CONFIGURED != cdc_acm.dev.cur_status)
     {
         /* wait for standard USB enumeration is finished */
@@ -80,16 +85,19 @@ int main(void)
 
     while (1)
     {
-        led_water();
-        //        led_state(lED_IDLE);
-        //        can0_send_test();
-        if (0U == cdc_acm_check_ready(&cdc_acm))
+        protocol_task();
+        st = protocol_activity();
+        if (PROTO_BUSY == st)
         {
-            cdc_acm_data_receive(&cdc_acm);
+            led_progress(); /* 传输中：两两交替闪 */
+        }
+        else if (PROTO_DONE == st)
+        {
+            led_complete(); /* 传输完成：四个一起闪 */
         }
         else
         {
-            cdc_acm_data_send(&cdc_acm);
+            led_water(); /* 空闲：走马灯 */
         }
     }
 }

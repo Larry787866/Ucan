@@ -82,16 +82,10 @@ void delay_decrement(void)
     }
 }
 
-
 volatile uint32_t systick_tick = 0U;
-
-//void SysTick_Handler(void)
-//{
-//    delay_decrement();
-//    systick_tick++;
-//}
 
 uint32_t get_systick_tick(void)
 {
 	return systick_tick;
 }
+

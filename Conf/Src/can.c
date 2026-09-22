@@ -51,10 +51,10 @@ void can0_config(void)
     can_filter_init(&can_filter);
 }
 
-uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t send_len)
+uint8_t can0_send_frame(uint32_t id, uint8_t is_extended, uint8_t *data, uint8_t send_len)
 {
     can_transmit_message_struct tx_message;
-    uint32_t timeout = 0U;
+    uint32_t timeout = CAN_SEND_TIMEOUT_LOOP;
     uint8_t i = 0U;
     uint8_t mailbox = CAN_NOMAILBOX;
 
@@ -69,9 +69,18 @@ uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t send_len)
 
     can_struct_para_init(CAN_TX_MESSAGE_STRUCT, &tx_message);
 
-    tx_message.tx_sfid = id & 0x7FFU;
-    tx_message.tx_efid = 0x00U;
-    tx_message.tx_ff = CAN_FF_STANDARD;
+    if (0U != is_extended)
+    {
+        tx_message.tx_efid = id & 0x1FFFFFFFU;
+        tx_message.tx_sfid = 0x00U;
+        tx_message.tx_ff = CAN_FF_EXTENDED;
+    }
+    else
+    {
+        tx_message.tx_sfid = id & 0x7FFU;
+        tx_message.tx_efid = 0x00U;
+        tx_message.tx_ff = CAN_FF_STANDARD;
+    }
     tx_message.tx_ft = CAN_FT_DATA;
     tx_message.tx_dlen = send_len;
 
@@ -86,7 +95,6 @@ uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t send_len)
         return CAN_TRANSMIT_NOMAILBOX;
     }
 
-    timeout = 0xFFFFFU;
     while ((CAN_TRANSMIT_PENDING == can_transmit_states(CAN0, mailbox)) && (0U != timeout))
     {
         timeout--;
@@ -99,6 +107,29 @@ uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t send_len)
     }
 
     return (uint8_t)can_transmit_states(CAN0, mailbox);
+}
+
+uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t send_len)
+{
+    return can0_send_frame(id, 0U, data, send_len);
+}
+
+uint8_t can0_recv_msg(can_receive_message_struct *rx_msg)
+{
+    if (0 == rx_msg)
+    {
+        return 0U;
+    }
+
+    if (0U == can_receive_message_length_get(CAN0, CAN_FIFO0))
+    {
+        return 0U; /* FIFO0 里没有报文 */
+    }
+
+    /* can_message_receive() 读走报文后会自己释放 FIFO */
+    can_message_receive(CAN0, CAN_FIFO0, rx_msg);
+
+    return 1U;
 }
 
 uint8_t can0_send_test(void)

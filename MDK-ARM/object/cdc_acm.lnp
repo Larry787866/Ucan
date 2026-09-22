@@ -4,6 +4,7 @@
 ".\object\systick.o"
 ".\object\func.o"
 ".\object\gd32f30x_hw.o"
+".\object\protocal.o"
 ".\object\system_gd32f30x.o"
 ".\object\gd32f30x_adc.o"
 ".\object\gd32f30x_bkp.o"

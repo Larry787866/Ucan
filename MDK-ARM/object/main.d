@@ -50,3 +50,4 @@
 .\object\main.o: ..\User\inc\Func.h
 .\object\main.o: ..\Conf\Inc\can.h
 .\object\main.o: ..\Conf\Inc\gpio.h
+.\object\main.o: ..\User\inc\Protocal.h

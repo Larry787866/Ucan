@@ -160,9 +160,12 @@ void USBD_LP_CAN0_RX0_IRQHandler(void)
     usbd_isr();
 }
 */
+extern volatile uint32_t systick_tick;
+
 void SysTick_Handler(void)
 {
     delay_decrement();
+    systick_tick++;
 }
 
 #ifdef USBD_DOUBLE_BUFFER_ENABLE
