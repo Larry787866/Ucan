@@ -48,6 +48,15 @@ OF SUCH DAMAGE.
 #define CDC_DATA_OUT_EP                     EP3_OUT /* EP3 for data OUT */
 #define CDC_CMD_EP                          EP2_IN  /* EP2 for CDC commands */
 
+/* gs_usb（vendor 类）用的端点。candleLight 固定用 0x81 / 0x02，内核驱动和
+   Cangaroo 都按这两个地址找端点，不能改。
+   好处是正好落在本芯片已有的分配上：0x81 = EP1_IN（TX1 FIFO 已经分了 64 words），
+   0x02 = EP2_OUT（OUT 端点不占专用 FIFO，共用 RX FIFO），所以从 CDC 切到
+   gs_usb 不需要动 usb_conf.h 里的 FIFO 预算。
+   ⚠ 0x81 和 CDC 的 CDC_DATA_IN_EP 是同一个端点：两个类只能二选一（见 main.c）。 */
+#define GSUSB_IN_EP                         EP1_IN  /* 0x81 */
+#define GSUSB_OUT_EP                        EP2_OUT /* 0x02 */
+
 #define USB_STRING_COUNT                    4U
 
 #define USB_CDC_CMD_PACKET_SIZE             8U    /* Control Endpoint Packet size */

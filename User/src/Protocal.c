@@ -1,20 +1,51 @@
     /*!
         \file    Protocal.c
-        \brief   USB(CDC) <-> CAN0 转发协议（Ucan）
+        \brief   USB(CDC) <-> CAN0 转发协议（Ucan）—— v2
 
-        \version 2026-9-22
+        \version 2026-9-26
 
-        一帧固定 18 字节，沿用原工程的格式，PC 上位机不用改：
+        v2 相对 v1 的变化（**不向后兼容**，老的 18 字节脚本作废）：
+          - 去掉 0xEE 帧尾和 SUM 校验（USB 每个包本身有 CRC16）
+          - 去掉 8 字节 DATA 的补 0：DLC 多大就发多少字节
+          - 帧长由 [2] 的 type|dlc 自描述，不像 v1 那样恒定 18 字节
+          - 加握手（命令 0x01）：握手之前 CAN -> USB 不上报
 
-        偏移  长度  内容
-        [0]    1    0xAA           帧头 1
-        [1]    1    0x55           帧头 2
-        [2]    1    0x01 / 0x02    01 = 标准帧, 02 = 扩展帧
-        [3]    4    CAN ID         大端；标准帧只取低 11 位
-        [7]    1    DLC            0 ~ 8
-        [8]    8    DATA           不足 8 字节的高位补 0
-        [16]   1    SUM            [2]~[15] 逐字节相加取低 8 位
-        [17]   1    0xEE           帧尾
+        一帧的布局（多字节字段都是大端）：
+
+        偏移      长度    内容
+        [0]        1      0xAA
+        [1]        1      0x55
+        [2]        1      高 4 位 = 类型，低 4 位 = 长度（就是 DLC）
+        [3]       2 或 4  CAN ID（大端）：标准帧 2 字节，扩展帧 4 字节
+        [3+idlen] DLC     数据，DLC 个字节，不足 8 不补 0
+
+        类型：1 = 标准数据帧，总长 5 + DLC（5..13）
+              2 = 扩展数据帧，总长 7 + DLC（7..15）
+              3 = 命令帧，    AA 55 3L <cmd> <payload[L]>，总长 4 + L（4..19）
+              4/5 = 保留（将来的标准/扩展远程帧，现在按非法帧处理，丢 1 字节重扫）
+
+        握手（cmd = 0x01）：
+
+        电脑 -> 板子   AA 55 30 01                  握手请求（L=0）
+        板子 -> 电脑   AA 55 34 01 01 10 0F 01      握手应答（L=4）
+                               |  |  |  |  |
+                               |  |  |  |  +-- 当前 CAN 比特率索引：1 = 1 Mbps
+                               |  |  |  +----- 能力位：
+                               |  |  |           bit0 扩展帧 / bit1 命令帧
+                               |  |  |           bit2 允许 DLC=0 / bit3 需要握手
+                               |  |  +-------- 固件版本 0x10 = 1.0
+                               |  +----------- 协议版本 0x01
+                               +-------------- 命令码（回显请求的 cmd）
+
+        规则：
+        1. 上电 / 复位 / USB 重新枚举之后是"未握手"状态，**CAN -> USB 不上报**
+           （这才是加握手的意义：乱字节不会被当成假帧报上去）
+        2. 收到握手请求 -> 回握手应答 -> 已握手，开始上报
+        3. 收到任何**合法数据帧**也算已握手（宽容：不做握手的老脚本改个格式就能用）
+        4. 解析出错只丢 **1 字节**继续扫（v1 是整段丢 18 字节）
+
+        例子：AA 55 12 04 56 AB CD（7 字节）＝ 标准帧、ID 0x456、DLC 2、数据 AB CD。
+              同一帧在 v1 里要占 18 字节，现在省掉 11 个字节。
     */
 
     #include "Protocal.h"
@@ -30,10 +61,39 @@
 
     #define PKT_SOF1            0xAAU
     #define PKT_SOF2            0x55U
-    #define PKT_EOF             0xEEU
-    #define PKT_TOTAL_LEN       18U
-    #define PKT_TYPE_STD        0x01U
-    #define PKT_TYPE_EXT        0x02U
+
+    #define PKT_TYPE_STD        0x01U       /* 标准数据帧 */
+    #define PKT_TYPE_EXT        0x02U       /* 扩展数据帧 */
+    #define PKT_TYPE_CMD        0x03U       /* 命令帧 */
+    /* 4 / 5 是保留的标准/扩展远程帧，现在当非法类型丢掉 */
+
+    #define PKT_ID_LEN_STD      2U          /* 标准帧 ID 占 2 字节 */
+    #define PKT_ID_LEN_EXT      4U          /* 扩展帧 ID 占 4 字节 */
+    #define PKT_HDR_LEN         5U          /* AA 55 type|dlc + 2 字节 ID */
+    #define PKT_ID_OFF          3U          /* ID 的起始偏移 */
+    #define PKT_MAX_DLC         8U
+
+    /* 最长的一帧：命令帧 4 + 15 = 19（type|dlc 的低 4 位最大 15）。
+       数据帧最长是扩展帧 7 + 8 = 15，也在这个范围内。 */
+    #define PKT_MAX_LEN         19U
+
+    /* 命令帧 */
+    #define PKT_CMD_HELLO       0x01U       /* 握手 */
+    #define PKT_HELLO_PL_LEN    4U          /* 握手应答的 payload 长度 */
+    #define PKT_HELLO_REQ_LEN   4U          /* 握手请求的总长：AA 55 30 01 */
+    #define PKT_HELLO_ACK_LEN   8U          /* 握手应答的总长：4 + 4 */
+
+    #define PKT_VER_PROTO       0x01U       /* 协议版本 0.1 */
+    #define PKT_VER_FW          0x10U       /* 固件版本 1.0 */
+
+    #define PKT_CAP_EXT_FRAME   0x01U       /* 支持扩展帧 */
+    #define PKT_CAP_CMD_FRAME   0x02U       /* 支持命令帧 */
+    #define PKT_CAP_DLC0        0x04U       /* 允许 DLC = 0 */
+    #define PKT_CAP_HANDSHAKE   0x08U       /* 需要握手才上报 */
+    #define PKT_CAP_ALL         (PKT_CAP_EXT_FRAME | PKT_CAP_CMD_FRAME | \
+                                 PKT_CAP_DLC0 | PKT_CAP_HANDSHAKE)
+
+    #define PKT_BR_INDEX_1M     0x01U       /* 比特率索引：1 = 1 Mbps */
 
     #define USB_RX_RING_SIZE    512U        /* 电脑下发字节的环形缓冲 */
     #define CAN_UP_QUEUE_SIZE   16U         /* CAN 上行帧队列深度 */
@@ -56,7 +116,7 @@
 
     static usb_rx_ring_t usb_rx_ring;
 
-    /* CAN 上行：一帧的信息 */
+    /* CAN 上行：一帧的信息（组包时才按 5+DLC / 7+DLC 算长度） */
     typedef struct
     {
         uint32_t id;
@@ -69,10 +129,18 @@
     static volatile uint16_t can_up_head = 0U;      /* 写入位置 */
     static volatile uint16_t can_up_tail = 0U;      /* 读出位置 */
 
-    /* 解包状态机 */
-    static uint8_t rx_pkt[PKT_TOTAL_LEN];
-    static uint8_t rx_idx = 0U;
-    static uint8_t rx_state = 0U;                   /* 0=找 AA  1=找 55  2=收正文  3=等 EE */
+    /* 解包状态机。状态跨 USB 包保持：CDC 是字节流，一帧可能被拆到两个包里，
+       也可能三帧挤在一个包里。 */
+    static uint8_t rx_pkt[PKT_MAX_LEN];
+    static uint8_t rx_idx = 0U;                     /* 本帧已收字节数 */
+    static uint8_t rx_len = 0U;                     /* 本帧总长（读到 [2] 才算出） */
+    static uint8_t rx_state = 0U;                   /* 0=找 AA  1=找 55  2=读长度  3=收正文 */
+
+    /* 链路是否已握手。1 = 已握手，CAN -> USB 正常上报。
+       放全局（非 static）是为了能在 Keil 的 Watch 窗口里看。 */
+    volatile uint8_t proto_link_ready = 0U;
+
+    static volatile uint8_t hello_pending = 0U;     /* 握手应答还没发出去 */
 
     /* 数据传输状态（点灯用） */
     static volatile uint32_t proto_last_active = 0U;    /* 最近一次有数据的时刻 */
@@ -239,15 +307,91 @@
     }
 
     /*!
-        \brief      把环形缓冲里的字节解成一帧帧发给 CAN
+        \brief      按 type|dlc 算出这帧的 ID 长度和总长
+        \param[in]  tl: [2] 那个字节（高 4 位类型，低 4 位长度）
+        \param[out] idlen: ID 占几个字节
+        \retval     总长；0 表示这帧非法（类型不认识 / DLC > 8）
+    */
+    static uint8_t pkt_total_len(uint8_t tl, uint8_t *idlen)
+    {
+        uint8_t type = (uint8_t)(tl >> 4);
+        uint8_t dlc  = (uint8_t)(tl & 0x0FU);
+
+        *idlen = 0U;
+
+        if ((PKT_TYPE_STD == type) && (dlc <= PKT_MAX_DLC))
+        {
+            *idlen = PKT_ID_LEN_STD;
+            return (uint8_t)(PKT_HDR_LEN + dlc);            /* 5 + DLC */
+        }
+
+        if ((PKT_TYPE_EXT == type) && (dlc <= PKT_MAX_DLC))
+        {
+            *idlen = PKT_ID_LEN_EXT;
+            return (uint8_t)(PKT_HDR_LEN + PKT_ID_LEN_STD + dlc);   /* 7 + DLC */
+        }
+
+        if (PKT_TYPE_CMD == type)
+        {
+            *idlen = 0U;
+            return (uint8_t)(4U + dlc);                     /* AA 55 3L <cmd> <payload[L]> */
+        }
+
+        return 0U;                                          /* 类型 4/5 或 DLC>8：非法 */
+    }
+
+    /*!
+        \brief      处理一个收全了的命令帧
+        \note       rx_pkt[3] = cmd，后面是 payload。命令是在主循环里解析的，
+                    所以这里只记状态，真正的发送交给 proto_hello_flush()
+                    （它要和上行帧一起排队，共用一个"上一包发完了没"的判断）。
+    */
+    static void usb_rx_cmd_handle(void)
+    {
+        uint8_t cmd = rx_pkt[3];
+
+        if (PKT_CMD_HELLO == cmd)
+        {
+            proto_link_ready = 1U;                  /* 握手请求：立刻算已握手 */
+            hello_pending    = 1U;                  /* 应答下一轮发出去 */
+            proto_touch();
+        }
+        /* 其它命令暂时不认：只丢这一帧，后面的字节照常解析 */
+    }
+
+    /*!
+        \brief      处理一个收全了的数据帧（发到 CAN 总线上）
+    */
+    static void usb_rx_data_handle(uint8_t idlen, uint8_t dlc)
+    {
+        uint32_t id = 0U;
+        uint8_t  i = 0U;
+
+        for (i = 0U; i < idlen; i++)
+        {
+            id = (id << 8) | (uint32_t)rx_pkt[PKT_ID_OFF + i];      /* 大端 */
+        }
+
+        (void)can0_send_frame(id,
+                              (PKT_ID_LEN_EXT == idlen) ? 1U : 0U,
+                              &rx_pkt[PKT_ID_OFF + idlen],
+                              dlc);                 /* dlc = 0 也合法 */
+
+        /* 收到合法数据帧就当作已握手（规则 3）：老脚本不做握手也能用 */
+        proto_link_ready = 1U;
+        proto_touch();                              /* 电脑发来数据，点灯 */
+    }
+
+    /*!
+        \brief      把环形缓冲里的字节解成一帧帧
+        \note       状态跨调用保持，所以一次只取一个字节进来也不影响；
+                    解析出错只丢 1 字节继续扫（规则 4）。
     */
     static void usb_to_can_process(void)
     {
-        uint8_t  ch = 0U;
-        uint8_t  sum = 0U;
-        uint8_t  dlc = 0U;
-        uint8_t  i = 0U;
-        uint32_t can_id = 0U;
+        uint8_t ch = 0U;
+        uint8_t idlen = 0U;
+        uint8_t total = 0U;
 
         while (0U != usb_rx_get(&ch))
         {
@@ -274,47 +418,48 @@
                 }                                       /* 又是 0xAA 就继续等 0x55 */
                 break;
 
-            case 2U:                                    /* 收 [2]~[16] */
-                rx_pkt[rx_idx] = ch;
-                rx_idx++;
-                if (rx_idx >= (PKT_TOTAL_LEN - 1U))
+            case 2U:                                    /* 读 [2]，算出这帧有多长 */
+                total = pkt_total_len(ch, &idlen);
+
+                if (0U == total)
                 {
-                    rx_state = 3U;
+                    /* 非法帧：丢 1 字节重扫。这个字节本身可能就是个新帧头，
+                       比如 AA 55 F0 AA 55 12 ... 里的那个 AA，不能一起丢掉。 */
+                    if (PKT_SOF1 == ch)
+                    {
+                        rx_pkt[0] = ch;
+                        rx_state = 1U;
+                    }
+                    else
+                    {
+                        rx_state = 0U;
+                    }
+                    break;
                 }
+
+                rx_pkt[2] = ch;
+                rx_idx   = 3U;
+                rx_len   = total;
+                rx_state = 3U;
                 break;
 
-            case 3U:                                    /* 等 0xEE 并校验 */
-                if (PKT_EOF == ch)
+            case 3U:                                    /* 收剩下的字节 */
+                rx_pkt[rx_idx] = ch;
+                rx_idx++;
+
+                if (rx_idx >= rx_len)
                 {
-                    rx_pkt[PKT_TOTAL_LEN - 1U] = ch;
-
-                    sum = 0U;
-                    for (i = 2U; i <= 15U; i++)
+                    if (PKT_TYPE_CMD == (uint8_t)(rx_pkt[2] >> 4))
                     {
-                        sum = (uint8_t)(sum + rx_pkt[i]);
+                        usb_rx_cmd_handle();
+                    }
+                    else
+                    {
+                        usb_rx_data_handle(idlen, (uint8_t)(rx_pkt[2] & 0x0FU));
                     }
 
-                    if (sum == rx_pkt[16])
-                    {
-                        can_id = ((uint32_t)rx_pkt[3] << 24) |
-                                ((uint32_t)rx_pkt[4] << 16) |
-                                ((uint32_t)rx_pkt[5] << 8)  |
-                                ((uint32_t)rx_pkt[6]);
-
-                        dlc = rx_pkt[7];
-                        if (dlc > 8U)
-                        {
-                            dlc = 8U;
-                        }
-
-                        can0_send_frame(can_id,
-                                        (PKT_TYPE_EXT == rx_pkt[2]) ? 1U : 0U,
-                                        &rx_pkt[8],
-                                        dlc);
-                    }
+                    rx_state = 0U;                      /* 收全了，重新找帧头 */
                 }
-
-                rx_state = 0U;                          /* 不管对错都重新找帧头 */
                 break;
 
             default:
@@ -330,11 +475,17 @@
         \brief      把 CAN 收到的一帧放进上行队列
         \param[in]  can_rx: CAN 接收结构
         \note       队列满就丢帧（USB 侧堵住了）。
+                    没握手之前直接丢：上报"断线期间的旧帧"没有意义。
     */
     static void can_up_push(can_receive_message_struct *can_rx)
     {
         uint16_t next = 0U;
         uint8_t i = 0U;
+
+        if (0U == proto_link_ready)
+        {
+            return;                                 /* 还没握手，不上报 */
+        }
 
         next = (uint16_t)((can_up_head + 1U) % CAN_UP_QUEUE_SIZE);
         if (next == can_up_tail)
@@ -410,6 +561,9 @@
                     所以这一轮 protocol_task() 里的 can_rx_poll() 拿不到帧；
                     帧还是照常进了上行队列，protocol_task() 里的 can_up_flush()
                     会把它发给电脑，VOFA 和灯都和平时一样有反应。
+
+                    ⚠ 帧要进上行队列，前提是已经握手（proto_link_ready = 1），
+                    所以自测之前记得先发一次握手请求或者随便发一帧数据。
     */
     void can_rx_test(void)
     {
@@ -439,17 +593,21 @@
     }
 
     /*!
-        \brief      把上行队列里的帧组包发给电脑
+        \brief      把上行队列里的帧按 v2 格式组包发给电脑
+        \note       长度按 DLC 算（标准帧 5+DLC，扩展帧 7+DLC），
+                    不补 0、不加 SUM、不加帧尾。
     */
     static void can_up_flush(void)
     {
         /* 必须是 static：usbd_ep_send() 是异步的，函数返回时数据还没搬完 */
-        static uint8_t tx_pkt[PKT_TOTAL_LEN];
+        static uint8_t tx_pkt[PKT_MAX_LEN];
 
-        uint32_t id = 0U;
-        uint8_t  sum = 0U;
-        uint8_t  i = 0U;
+        uint32_t id  = 0U;
+        uint8_t  i   = 0U;
         uint8_t  len = 0U;
+        uint8_t  off = 0U;
+        uint8_t  idlen = 0U;
+        uint8_t  ext = 0U;
 
         while (can_up_tail != can_up_head)
         {
@@ -469,33 +627,75 @@
 
             len = can_up_queue[can_up_tail].len;
             id  = can_up_queue[can_up_tail].id;
+            ext = can_up_queue[can_up_tail].is_extended;
+
+            if (0U != ext)
+            {
+                idlen = PKT_ID_LEN_EXT;
+                tx_pkt[2] = (uint8_t)((PKT_TYPE_EXT << 4) | len);
+            }
+            else
+            {
+                idlen = PKT_ID_LEN_STD;
+                tx_pkt[2] = (uint8_t)((PKT_TYPE_STD << 4) | len);
+            }
 
             tx_pkt[0] = PKT_SOF1;
             tx_pkt[1] = PKT_SOF2;
-            tx_pkt[2] = (0U != can_up_queue[can_up_tail].is_extended) ? PKT_TYPE_EXT : PKT_TYPE_STD;
-            tx_pkt[3] = (uint8_t)(id >> 24);
-            tx_pkt[4] = (uint8_t)(id >> 16);
-            tx_pkt[5] = (uint8_t)(id >> 8);
-            tx_pkt[6] = (uint8_t)(id);
-            tx_pkt[7] = len;
 
-            for (i = 0U; i < 8U; i++)
+            /* ID 大端：ID 紧跟在 [2] 后面，长度由类型定 */
+            for (i = 0U; i < idlen; i++)
             {
-                tx_pkt[8U + i] = (i < len) ? can_up_queue[can_up_tail].data[i] : 0U;
+                tx_pkt[PKT_ID_OFF + i] = (uint8_t)(id >> (8U * (idlen - 1U - i)));
             }
 
-            sum = 0U;
-            for (i = 2U; i <= 15U; i++)
+            /* 数据：只发 DLC 个字节，不足 8 个不补 0 */
+            off = (uint8_t)(PKT_ID_OFF + idlen);
+            for (i = 0U; i < len; i++)
             {
-                sum = (uint8_t)(sum + tx_pkt[i]);
+                tx_pkt[off + i] = can_up_queue[can_up_tail].data[i];
             }
-            tx_pkt[16] = sum;
-            tx_pkt[17] = PKT_EOF;
 
-            usb_send(tx_pkt, PKT_TOTAL_LEN);
+            usb_send(tx_pkt, (uint16_t)(off + len));
 
             can_up_tail = (uint16_t)((can_up_tail + 1U) % CAN_UP_QUEUE_SIZE);
         }
+    }
+
+    /*!
+        \brief      把握手应答发出去
+        \note       应答固定 8 字节：AA 55 34 01 01 10 0F 01（见文件头）。
+                    放这里是因为要和上行帧共用同一个"上一包发完了没"的判断；
+                    发不出去就留着，下一轮接着试，不会丢。
+    */
+    static void proto_hello_flush(void)
+    {
+        /* 必须是 static：理由同 can_up_flush() 里的 tx_pkt */
+        static uint8_t tx_cmd[PKT_HELLO_ACK_LEN];
+
+        if (0U == hello_pending)
+        {
+            return;
+        }
+
+        if ((0U == usb_ready()) || (0U != usb_tx_busy()))
+        {
+            return;                                 /* 下一轮再试 */
+        }
+
+        tx_cmd[0] = PKT_SOF1;
+        tx_cmd[1] = PKT_SOF2;
+        tx_cmd[2] = (uint8_t)((PKT_TYPE_CMD << 4) | PKT_HELLO_PL_LEN);
+        tx_cmd[3] = PKT_CMD_HELLO;
+        tx_cmd[4] = PKT_VER_PROTO;
+        tx_cmd[5] = PKT_VER_FW;
+        tx_cmd[6] = (uint8_t)PKT_CAP_ALL;
+        tx_cmd[7] = PKT_BR_INDEX_1M;
+
+        usb_send(tx_cmd, PKT_HELLO_ACK_LEN);
+
+        /* usb_send() 内部判过同样的忙，走到这里说明包已经交给 USB 核心了 */
+        hello_pending = 0U;
     }
 
     /* ======================== 自动测试发送（调试用） ======================== */
@@ -513,7 +713,7 @@
     */
     static void proto_auto_test(void)
     {
-#if (0U != PROTO_AUTO_TEST)
+    #if (0U != PROTO_AUTO_TEST)
         static uint32_t last = 0U;
         static uint16_t seq  = 0U;
         uint8_t payload[8];
@@ -556,13 +756,14 @@
         }
 
         seq++;
-#endif
+    #endif
     }
 
     /* ============================ 对外接口 ============================ */
 
     /*!
         \brief      协议层初始化
+        \note       顺带把链路复位成"未握手"：要等上位机打招呼才开始上报。
     */
     void protocol_init(void)
     {
@@ -573,7 +774,11 @@
         can_up_tail = 0U;
 
         rx_idx = 0U;
+        rx_len = 0U;
         rx_state = 0U;
+
+        proto_link_ready = 0U;
+        hello_pending    = 0U;
 
         memset(rx_pkt, 0, sizeof(rx_pkt));
     }
@@ -585,9 +790,20 @@
     {
         uint8_t  usb_buf[USB_CDC_RX_LEN];
         uint16_t n = 0U;
+        uint8_t  status = (uint8_t)cdc_acm.dev.cur_status;
 
-        if (0U == usb_ready())
+        if (USBD_CONFIGURED != status)
         {
+            /* 真的重新枚举了（DEFAULT / ADDRESSED）就丢掉握手，等上位机重新打招呼；
+               挂起（SUSPENDED）保留握手，恢复之后接着用。 */
+            if ((USBD_DEFAULT == status) || (USBD_ADDRESSED == status))
+            {
+                proto_link_ready = 0U;
+                hello_pending    = 0U;
+                can_up_head = 0U;                   /* 队列里的旧帧也别要了 */
+                can_up_tail = 0U;
+            }
+
             return;                                 /* 还没枚举完 */
         }
 
@@ -605,6 +821,7 @@
 
         /* CAN -> 电脑 */
         can_rx_poll();
+        proto_hello_flush();
         can_up_flush();
     }
 

@@ -414,6 +414,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\src\Protocal.c</FilePath>
             </File>
+            <File>
+              <FileName>gsusb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\src\gsusb.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -595,9 +600,9 @@
               <FilePath>..\device\core\Source\usbd_core.c</FilePath>
             </File>
             <File>
-              <FileName>usbd_enum.c</FileName>
+              <FileName>usbd_enum_ucan.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\device\core\Source\usbd_enum.c</FilePath>
+              <FilePath>..\device\core\Source\usbd_enum_ucan.c</FilePath>
             </File>
             <File>
               <FileName>usbd_transc.c</FileName>

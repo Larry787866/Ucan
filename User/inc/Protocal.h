@@ -1,8 +1,10 @@
 /*!
     \file    Protocal.h
-    \brief   USB(CDC) <-> CAN0 转发协议（Ucan）
+    \brief   USB(CDC) <-> CAN0 转发协议（Ucan）—— v2
 
-    \version 2026-9-22
+    \version 2026-9-26
+
+    帧格式和握手说明见 Protocal.c 的文件头（也抄了一份在 README 第三节）。
 */
 
 #ifndef PROTOCAL_H
@@ -29,6 +31,11 @@ void can_rx_test(void);
 
 extern volatile uint32_t can_rx_count;
 extern volatile uint32_t can_rx_last_id;
+
+/* 链路状态：1 = 已经握手，CAN -> USB 正常上报；0 = 还没握手，CAN 帧直接丢。
+   上电 / USB 重新枚举后是 0，收到握手请求（AA 55 30 01）或者任何合法数据帧
+   之后变 1。在 Keil 的 Watch 窗口里加上这个变量，就能一眼看出上位机握手没有。 */
+extern volatile uint8_t proto_link_ready;
 
 void protocol_init(void);
 
