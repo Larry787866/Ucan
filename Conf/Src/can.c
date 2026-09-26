@@ -54,7 +54,6 @@ void can0_config(void)
 uint8_t can0_send_frame(uint32_t id, uint8_t is_extended, uint8_t *data, uint8_t send_len)
 {
     can_transmit_message_struct tx_message;
-    uint32_t timeout = CAN_SEND_TIMEOUT_LOOP;
     uint8_t i = 0U;
     uint8_t mailbox = CAN_NOMAILBOX;
 
@@ -92,21 +91,20 @@ uint8_t can0_send_frame(uint32_t id, uint8_t is_extended, uint8_t *data, uint8_t
     mailbox = can_message_transmit(CAN0, &tx_message);
     if (CAN_NOMAILBOX == mailbox)
     {
+        /* 三个邮箱都占着不空（多半是对面不应答、auto_retrans 在无限重发），
+           这帧只能丢——那种情况下本来也发不出去 */
         return CAN_TRANSMIT_NOMAILBOX;
     }
 
-    while ((CAN_TRANSMIT_PENDING == can_transmit_states(CAN0, mailbox)) && (0U != timeout))
-    {
-        timeout--;
-    }
-
-    if (CAN_TRANSMIT_PENDING == can_transmit_states(CAN0, mailbox))
-    {
-        can_transmission_stop(CAN0, mailbox);
-        return CAN_TRANSMIT_TIMEOUT; /* transmit timeout */
-    }
-
-    return (uint8_t)can_transmit_states(CAN0, mailbox);
+    /* 投递完就返回，不再死等。
+       can_message_transmit() 是同步把整帧写进 TMI/TMP/TMDATA 寄存器的，
+       函数返回后报文就归硬件管了，跟 tx_message 和调用者的缓冲区都没关系；
+       硬件自己发、自己按 auto_retrans 重发。
+       （以前死等 0xFFFFF 次，对面不应答时每帧都把主循环卡住 0.2~0.3 秒，
+       期间 CAN 的 3 级 FIFO 会溢出、USB OUT 也可能丢数据。）
+       注意：CAN_TRANSMIT_OK 现在只表示"投递成功"，
+             不再表示"已上总线并且被 ACK"。 */
+    return CAN_TRANSMIT_OK;
 }
 
 uint8_t can0_send_msg(uint32_t id, uint8_t *data, uint8_t send_len)

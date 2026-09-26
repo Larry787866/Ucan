@@ -78,6 +78,10 @@
     static volatile uint32_t proto_last_active = 0U;    /* 最近一次有数据的时刻 */
     static volatile uint8_t  proto_ever_active = 0U;    /* 是否传过（区分上电空闲） */
 
+    /* CAN 接收计数（调试用，Keil 的 Watch 窗口里看这两个） */
+    volatile uint32_t can_rx_count   = 0U;              /* 总共收到过多少帧 */
+    volatile uint32_t can_rx_last_id = 0U;               /* 最后一帧的 ID */
+
     /* ======================== 数据传输状态（点灯用） ======================== */
 
     /*!
@@ -389,6 +393,51 @@
         }
     }
 
+    /* ======================== CAN 接收自测（调试用） ======================== */
+
+    /*!
+        \brief      把 CAN0 FIFO0 里的报文全部取出来，同时记下收到过多少帧
+        \note       和 can_rx_poll() 干的是同一件事，只是多记了两个数：
+                    can_rx_count   收到过多少帧
+                    can_rx_last_id 最后一帧的 ID
+                    在 Keil 的 Watch 窗口里加上这两个变量，跑起来，
+                    让 Cangaroo 发一帧，can_rx_count 就应该 +1。
+
+                    一直是 0 = 板子物理上一个字节都没收到（收发器 / PB8 /
+                    接线那一段），不用再怀疑软件了。
+
+                    主循环里在 protocol_task() 之前调用：它会先把 FIFO0 掏空，
+                    所以这一轮 protocol_task() 里的 can_rx_poll() 拿不到帧；
+                    帧还是照常进了上行队列，protocol_task() 里的 can_up_flush()
+                    会把它发给电脑，VOFA 和灯都和平时一样有反应。
+    */
+    void can_rx_test(void)
+    {
+        can_receive_message_struct rx_msg;
+
+        while (0U != can0_recv_msg(&rx_msg))
+        {
+            can_rx_count++;
+
+            if (CAN_FF_STANDARD == rx_msg.rx_ff)
+            {
+                can_rx_last_id = rx_msg.rx_sfid;
+            }
+            else
+            {
+                can_rx_last_id = rx_msg.rx_efid;
+            }
+
+            if (CAN_FT_DATA != rx_msg.rx_ft)
+            {
+                continue;                           /* 远程帧不往上传 */
+            }
+
+            can_up_push(&rx_msg);
+            proto_touch();                          /* CAN 收到数据，点灯 */
+        }
+    }
+
     /*!
         \brief      把上行队列里的帧组包发给电脑
     */
@@ -449,6 +498,67 @@
         }
     }
 
+    /* ======================== 自动测试发送（调试用） ======================== */
+
+    /*!
+        \brief      按固定周期自动发一帧测试数据（调试用）
+        \note       由 Protocal.h 里的 PROTO_AUTO_TEST 控制：
+                    = 0 什么都不做（正式固件就是这个值）
+                    = 1 直接灌进上行队列发给 VOFA，完全不碰 CAN
+                        （单独验证 USB 上行通路，不需要 Cangaroo 和总线）
+                    = 2 走 can0_send_frame() 发到 CAN 总线上
+                        （用来数 Cangaroo 里这一帧出现几次）
+                    数据固定 8 字节：前两字节是递增序号（大端），
+                    后面是 A5 5A 11 22 33 44，标准帧 ID = 0x123。
+    */
+    static void proto_auto_test(void)
+    {
+#if (0U != PROTO_AUTO_TEST)
+        static uint32_t last = 0U;
+        static uint16_t seq  = 0U;
+        uint8_t payload[8];
+
+        if ((get_systick_tick() - last) < PROTO_AUTO_TEST_MS)
+        {
+            return;
+        }
+        last = get_systick_tick();
+
+        /* 前两字节放序号，VOFA 里能看出数据在刷新 */
+        payload[0] = (uint8_t)(seq >> 8);
+        payload[1] = (uint8_t)(seq);
+        payload[2] = 0xA5U;
+        payload[3] = 0x5AU;
+        payload[4] = 0x11U;
+        payload[5] = 0x22U;
+        payload[6] = 0x33U;
+        payload[7] = 0x44U;
+
+        if (1U == PROTO_AUTO_TEST)
+        {
+            /* 绕开 CAN：自己造一帧塞进上行队列 */
+            can_receive_message_struct fake;
+
+            memset(&fake, 0, sizeof(fake));
+            fake.rx_ff   = CAN_FF_STANDARD;
+            fake.rx_sfid = 0x123U;
+            fake.rx_ft   = CAN_FT_DATA;
+            fake.rx_dlen = 8U;
+            memcpy(fake.rx_data, payload, 8U);
+
+            can_up_push(&fake);
+            proto_touch();
+            can_up_flush();
+        }
+        else if (2U == PROTO_AUTO_TEST)
+        {
+            (void)can0_send_frame(0x123U, 0U, payload, 8U);
+        }
+
+        seq++;
+#endif
+    }
+
     /* ============================ 对外接口 ============================ */
 
     /*!
@@ -480,6 +590,9 @@
         {
             return;                                 /* 还没枚举完 */
         }
+
+        /* 调试用：自动测试发送（PROTO_AUTO_TEST = 0 时不做任何事） */
+        proto_auto_test();
 
         /* 电脑 -> CAN */
         n = usb_recv(usb_buf, (uint16_t)sizeof(usb_buf));
