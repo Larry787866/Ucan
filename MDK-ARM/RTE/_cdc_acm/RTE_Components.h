@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'cdc_acm' 
+ * Project: 'Ucan' 
  * Target:  'cdc_acm' 
  */
 

@@ -76,8 +76,10 @@ int main(void)
     /* ← 用哪个模式就把另一个注释掉。
          gs_usb ：Cangaroo / Linux candump 直接认设备（通用 USB-CAN 适配器）
          cdc    ：CDC 虚拟串口 + 自己定的帧协议（用 VOFA+ 之类看字节流）*/
-    app_run_gsusb();
-    /* app_run_cdc(); */
+         
+    //    app_run_gsusb();
+
+    app_run_cdc();
 
     return 0;
 }
